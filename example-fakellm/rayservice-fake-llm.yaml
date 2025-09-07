@@ -1,0 +1,90 @@
+apiVersion: ray.io/v1
+kind: RayService
+metadata:
+  name: fake-llm-service
+spec:
+  rayClusterConfig:
+    rayVersion: "2.35.0"
+    # Kích hoạt autoscaling đơn giản
+    enableInTreeAutoscaling: true # Kích hoạt autoscaling
+    headGroupSpec:
+      serviceType: ClusterIP
+      rayStartParams:
+        num-cpus: "0" # Head node không xử lý task
+        dashboard-host: "0.0.0.0" # Ray Dashboard accessible
+        port: "6379" # Redis port
+        object-store-memory: "100000000"  # 100MB object store
+      template:
+        spec:
+          containers:
+            - name: ray-head
+              image: asia-southeast1-docker.pkg.dev/kubernetes-468114/test/fake-llm-ray:latest
+              resources:
+                requests:
+                  cpu: "1"
+                  memory: "1Gi"
+                limits:
+                  cpu: "1"
+                  memory: "1Gi"
+              env:
+                - name: RAY_ENABLE_AUTO_CONNECT
+                  value: "0"
+    workerGroupSpecs:
+      - groupName: workers
+        replicas: 1
+        minReplicas: 1
+        maxReplicas: 10
+        rayStartParams:
+          num-cpus: "1"
+          object-store-memory: "100000000"
+        template:
+          spec:
+            # Tolerations để worker pods có thể chạy trên nodes có taint
+            tolerations: # Chạy trên nodes có taint "workload=training"
+              - key: "workload"
+                operator: "Equal"
+                value: "training"
+                effect: "NoSchedule"
+            # Node selector để chỉ chạy trên nodes có label tương ứng
+            nodeSelector: # Chỉ chạy trên nodes có label "node-type=gpu"
+              node-type: "gpu"
+            # Hoặc sử dụng nodeAffinity thay cho nodeSelector (tùy chọn)
+            # affinity:
+            #   nodeAffinity:
+            #     requiredDuringSchedulingIgnoredDuringExecution:
+            #       nodeSelectorTerms:
+            #       - matchExpressions:
+            #         - key: "workload"
+            #           operator: In
+            #           values: ["training"]
+            containers:
+              - name: ray-worker
+                image: asia-southeast1-docker.pkg.dev/kubernetes-468114/test/fake-llm-ray:latest
+                resources:
+                  requests:
+                    cpu: "1"
+                    memory: "1Gi"
+                  limits:
+                    cpu: "1"
+                    memory: "1Gi"
+                env:
+                  - name: RAY_ENABLE_AUTO_CONNECT
+                    value: "0"
+  serveConfigV2: |
+    applications:
+      - name: fake_llm_app
+        import_path: fake_llm_app:deployment_graph
+        route_prefix: /fake
+        deployments:
+          - name: FakeLLM
+            ray_actor_options:
+              num_cpus: 1
+            autoscaling_config:
+              min_replicas: 1
+              initial_replicas: 1
+              max_replicas: 10
+              target_num_ongoing_requests_per_replica: 2
+              metrics_interval_s: 10
+              look_back_period_s: 30
+              upscale_delay_s: 30
+              downscale_delay_s: 60
