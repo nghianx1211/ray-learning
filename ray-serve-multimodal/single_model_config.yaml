@@ -1,0 +1,29 @@
+# single_model_config.yaml
+# Config for testing with 1 GPU - deploy only 1 model
+
+applications:
+  - name: "falcon3-1b-instruct-app"
+    import_path: "ray.serve.llm:build_openai_app"
+    route_prefix: "/v1"
+    args:
+      llm_configs:
+        - model_loading_config:
+            model_id: "falcon3-1b-instruct"
+            model_source: "tiiuae/Falcon3-1B-Instruct"
+          deployment_config:
+            name: "falcon3-1b-deployment"
+            num_cpus: 2
+            num_gpus: 0.9
+            autoscaling_config:
+              min_replicas: 1
+              max_replicas: 1
+              target_ongoing_requests: 50
+            max_ongoing_requests: 100
+          engine_kwargs:
+            dtype: "float16"
+            gpu_memory_utilization: 0.9
+            max_model_len: 8192
+            enforce_eager: true
+            max_num_seqs: 64
+            max_num_batched_tokens: 8192
+            trust_remote_code: true

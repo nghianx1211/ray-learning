@@ -1,0 +1,8 @@
+huggingface_hub
+vllm==0.10.2
+torch==2.8.0
+huggingface_hub[hf_transfer]==0.35.0
+pyarrow
+pip install gymnasium
+dm-tree
+ray[tune]

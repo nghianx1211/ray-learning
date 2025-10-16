@@ -1,0 +1,99 @@
+# multi_model_config.yaml
+# Cấu hình multi-model deployment cho Ray Serve
+# Mỗi application = 1 model với route riêng
+
+applications:
+  # Application 1: Falcon 3-1B Instruct
+  - name: "falcon3-1b-instruct-app"
+    import_path: "ray.serve.llm:build_openai_app"
+    route_prefix: "/falcon3-1b"
+    args:
+      llm_configs:
+        - model_loading_config:
+            model_id: "falcon3-1b-instruct"
+            model_source: "tiiuae/Falcon3-1B-Instruct"
+          deployment_config:
+            name: "falcon3-1b-deployment"
+            ray_actor_options:
+              num_cpus: 2  # Tăng CPU để handle concurrency tốt hơn
+              num_gpus: 0.95  # Sử dụng gần như full GPU
+            autoscaling_config:
+              min_replicas: 1
+              max_replicas: 1  # Single GPU = single replica
+              target_ongoing_requests: 50
+            max_ongoing_requests: 256  # Tăng concurrency limit
+          engine_kwargs:
+            tensor_parallel_size: 0  # KHÔNG dùng TP trên single GPU (yêu cầu 2+ GPUs)
+            dtype: "float16"
+            gpu_memory_utilization: 0.90  # Tối đa hóa GPU memory
+            max_model_len: 8192
+            enforce_eager: false  # Sử dụng CUDA graphs để tăng tốc
+            max_num_seqs: 256  # Tăng số sequences đồng thời
+            max_num_batched_tokens: 32768  # Tăng batch size
+            trust_remote_code: true
+            disable_custom_all_reduce: true
+
+  # # Application 2: Falcon H1-0.5B Instruct
+  # - name: "falcon-h1-0.5b-instruct-app"
+  #   import_path: "ray.serve.llm:build_openai_app"
+  #   route_prefix: "/falcon-h1-0.5b"
+  #   args:
+  #     llm_configs:
+  #       - model_loading_config:
+  #           model_id: "falcon-h1-0.5b-instruct"
+  #           model_source: "tiiuae/falcon-h1-0.5b-instruct"
+  #         deployment_config:
+  #           name: "falcon-h1-0.5b-deployment"
+  #           ray_actor_options:
+  #             num_cpus: 0.5  # Reduced CPU allocation per replica
+  #             num_gpus: 0.4  # Adjusted GPU allocation
+  #           autoscaling_config:
+  #             min_replicas: 1
+  #             max_replicas: 1  # Limit to 1 replica to save resources
+  #             target_ongoing_requests: 85
+  #           max_ongoing_requests: 100
+  #         engine_kwargs:
+  #           tensor_parallel_size: 0  # Avoid extra GPU bundle
+  #           dtype: "bfloat16"
+  #           gpu_memory_utilization: 0.4  # Adjusted GPU memory utilization
+  #           max_model_len: 4096
+  #           enforce_eager: true
+  #           max_num_seqs: 32
+  #           max_num_batched_tokens: 4096
+  #           trust_remote_code: true
+  #           disable_custom_all_reduce: true
+  #         router_config:
+  #           num_replicas: 1  # Reduce LLMRouter replicas
+  #           ray_actor_options:
+  #             num_cpus: 0.5  # Limit CPU for LLMRouter
+
+  # Application 3: Thêm model khác (template)
+  # Copy và chỉnh sửa block này để thêm model mới
+  # - name: "your-model-app"
+  #   import_path: "ray.serve.llm:build_openai_app"
+  #   route_prefix: "/your-model"
+  #   args:
+  #     llm_configs:
+  #       - model_loading_config:
+  #           model_id: "your-model-id"
+  #           model_source: "huggingface/model-path"
+  #         deployment_config:
+  #           name: "your-model-deployment"
+  #           ray_actor_options:
+  #             num_cpus: 4
+  #             num_gpus: 1
+  #           autoscaling_config:
+  #             min_replicas: 1
+  #             max_replicas: 3
+  #             target_ongoing_requests: 85
+  #           max_ongoing_requests: 100
+  #         engine_kwargs:
+  #           tensor_parallel_size: 1
+  #           dtype: "float16"
+  #           gpu_memory_utilization: 0.9
+  #           max_model_len: 8192
+  #           enforce_eager: true
+  #           max_num_seqs: 64
+  #           max_num_batched_tokens: 8192
+  #           trust_remote_code: true
+  #           disable_custom_all_reduce: true

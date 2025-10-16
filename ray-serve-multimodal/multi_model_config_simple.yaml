@@ -1,0 +1,59 @@
+# multi_model_config_simple.yaml
+# Simplified config for 1 GPU node - no placement groups
+
+applications:
+  # Application 1: Falcon 3-1B Instruct
+  - name: "falcon3-1b-instruct-app"
+    import_path: "ray.serve.llm:build_openai_app"
+    route_prefix: "/falcon3-1b"
+    args:
+      llm_configs:
+        - model_loading_config:
+            model_id: "falcon3-1b-instruct"
+            model_source: "tiiuae/Falcon3-1B-Instruct"
+          deployment_config:
+            name: "falcon3-1b-deployment"
+            # Simple resource allocation - no ray_actor_options
+            num_cpus: 0.5  # Use less CPU per replica
+            num_gpus: 0.4  # Use 0.4 GPU per replica
+            autoscaling_config:
+              min_replicas: 1
+              max_replicas: 2  # Max 2 replicas on 1 GPU
+              target_ongoing_requests: 50
+            max_ongoing_requests: 100
+          engine_kwargs:
+            dtype: "float16"
+            gpu_memory_utilization: 0.4
+            max_model_len: 4096  # Smaller to use less memory
+            enforce_eager: true
+            max_num_seqs: 32
+            max_num_batched_tokens: 4096
+            trust_remote_code: true
+
+  # Application 2: Falcon H1-0.5B Instruct
+  - name: "falcon-h1-0.5b-instruct-app"
+    import_path: "ray.serve.llm:build_openai_app"
+    route_prefix: "/falcon-h1-0.5b"
+    args:
+      llm_configs:
+        - model_loading_config:
+            model_id: "falcon-h1-0.5b-instruct"
+            model_source: "tiiuae/falcon-h1-0.5b-instruct"
+          deployment_config:
+            name: "falcon-h1-0.5b-deployment"
+            # Simple resource allocation
+            num_cpus: 0.5
+            num_gpus: 0.4
+            autoscaling_config:
+              min_replicas: 1
+              max_replicas: 2
+              target_ongoing_requests: 50
+            max_ongoing_requests: 100
+          engine_kwargs:
+            dtype: "bfloat16"
+            gpu_memory_utilization: 0.4
+            max_model_len: 2048
+            enforce_eager: true
+            max_num_seqs: 16
+            max_num_batched_tokens: 2048
+            trust_remote_code: true

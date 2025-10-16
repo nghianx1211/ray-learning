@@ -1,0 +1,32 @@
+# single_model_optimized.yaml
+# Cấu hình deploy 1 model duy nhất với tài nguyên tối ưu cho single-GPU node
+
+applications:
+  # Deploy chỉ 1 model để tránh resource contention
+  - name: "falcon3-1b-instruct-app"
+    import_path: "ray.serve.llm:build_openai_app"
+    route_prefix: "/v1"
+    args:
+      llm_configs:
+        - model_loading_config:
+            model_id: "falcon3-1b-instruct"
+            model_source: "tiiuae/Falcon3-1B-Instruct"
+          deployment_config:
+            name: "falcon3-1b-deployment"
+            ray_actor_options:
+              num_gpus: 0.001
+            autoscaling_config:
+              min_replicas: 1
+              max_replicas: 1  # Single GPU = single replica
+              target_ongoing_requests: 50
+            max_ongoing_requests: 256  # Tăng concurrency limit
+          engine_kwargs:
+            tensor_parallel_size: 0  # KHÔNG dùng TP trên single GPU (yêu cầu 2+ GPUs)
+            dtype: "float16"
+            gpu_memory_utilization: 0.4 # Tối đa hóa GPU memory
+            max_model_len: 8192
+            enforce_eager: false  # Sử dụng CUDA graphs để tăng tốc
+            max_num_seqs: 256  # Tăng số sequences đồng thời
+            max_num_batched_tokens: 8192  # Tăng batch size
+            trust_remote_code: true
+            disable_custom_all_reduce: true

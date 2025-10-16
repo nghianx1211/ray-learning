@@ -1,0 +1,41 @@
+# model_config.yaml
+# Cấu hình để serve model Falcon 3-1B qua Ray Serve
+
+llm_configs:
+  - model_loading_config:
+      model_id: "tiiuae/falcon3-1b-instruct"
+      # model_source: "tiiuae/falcon3-1b-instruct"  # Tùy chọn: chỉ định nguồn model (HF, S3, GCS, local path)
+      # tokenizer_source: null  # Tùy chọn: chỉ định nguồn tokenizer riêng
+
+    llm_engine: "vLLM"  # Engine để chạy model (chỉ hỗ trợ vLLM)
+
+    engine_kwargs:
+      # Các tham số cho vLLM engine
+      max_model_len: 2048  # Độ dài context tối đa
+      gpu_memory_utilization: 0.9  # Tỷ lệ VRAM sử dụng
+      tensor_parallel_size: 1  # BẮT BUỘC: Tắt tensor parallelism
+      # enable_lora: false  # Bật LoRA adapters
+      # max_num_batched_tokens: 8192  # Số token tối đa trong batch
+      # enable_chunked_prefill: false  # Bật chunked prefill
+
+    deployment_config:
+      num_replicas: 1  # Số replica deployment
+      max_ongoing_requests: 100  # Số request đồng thời tối đa
+      ray_actor_options:
+        num_gpus: 1  # Số GPU cho mỗi replica
+        num_cpus: 2  # Số CPU cho mỗi replica (tránh thiếu CPU)
+        # resources: {"custom_resource": 1}  # Custom resources
+
+    # accelerator_type: "NVIDIA_A100_80G"  # Tùy chọn: chỉ định loại GPU
+
+    # lora_config:  # Tùy chọn: cấu hình LoRA adapters
+    #   dynamic_lora_loading_path: "s3://bucket/lora-adapters"
+    #   max_num_adapters_per_replica: 16
+    #   download_timeout_s: 600
+    #   max_download_tries: 3
+
+    # runtime_env:  # Tùy chọn: môi trường runtime cho deployment
+    #   pip:
+    #     - "transformers==4.36.0"
+    #   env_vars:
+    #     CUSTOM_VAR: "value"
