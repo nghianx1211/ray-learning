@@ -1,0 +1,4 @@
+accelerate
+vllm
+ray[serve]
+ray[default]

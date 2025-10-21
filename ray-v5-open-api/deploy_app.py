@@ -1,0 +1,65 @@
+#!/usr/bin/env python3
+"""
+Deploy Ray Serve applications with custom app names based on model_id.
+Usage: python deploy_app.py [config_path]
+"""
+import sys
+import os
+from ray import serve
+
+# Import the build_app function from vllm_host
+from builders.app_builder import build_app, load_multi_model_config
+from rich.console import Console
+
+console = Console()
+
+def main():
+    # Get config path from args or environment
+    if len(sys.argv) > 1:
+        config_path = sys.argv[1]
+    else:
+        config_path = os.environ.get("MODEL_CONFIG_PATH", "model_config.yaml")
+    
+    console.print(f"[bold cyan]📋 Loading config from: {config_path}[/bold cyan]")
+    
+    # Load configs to get model IDs
+    configs = load_multi_model_config(config_path)
+    
+    # Build and deploy application(s)
+    if len(configs) == 1:
+        # Single model - use model_id as app name
+        model_id = configs[0].model_loading_config.get("model_id", "default")
+        console.print(f"[bold green]Deploying single model application: {model_id}[/bold green]")
+        
+        app = build_app({"config_path": config_path})
+        serve.run(app, name=model_id, route_prefix=f"/{model_id}")
+        
+        console.print(f"[bold green]Application '{model_id}' deployed successfully![/bold green]")
+        console.print(f"[bold cyan]📍 Endpoint: http://127.0.0.1:8000/{model_id}[/bold cyan]")
+    else:
+        # Multiple models - deploy each as separate application
+        console.print(f"[bold green]Deploying {len(configs)} separate applications[/bold green]")
+        
+        apps_dict = build_app({"config_path": config_path})
+        
+        for model_id, app in apps_dict.items():
+            console.print(f"\n[bold yellow]Deploying: {model_id}[/bold yellow]")
+            serve.run(app, name=model_id, route_prefix=f"/{model_id}")
+            console.print(f"[bold green]Application '{model_id}' deployed[/bold green]")
+            console.print(f"[bold cyan]📍 Endpoint: http://127.0.0.1:8000/{model_id}[/bold cyan]")
+    
+    console.print("\n[bold green]🎉 All applications deployed successfully![/bold green]")
+    console.print("[bold cyan]💡 Press Ctrl+C to stop[/bold cyan]")
+    
+    # Keep the script running
+    try:
+        import time
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        console.print("\n[bold yellow]⚠️  Shutting down...[/bold yellow]")
+        serve.shutdown()
+        console.print("[bold green]Shutdown complete[/bold green]")
+
+if __name__ == "__main__":
+    main()

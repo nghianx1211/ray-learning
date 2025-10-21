@@ -1,0 +1,123 @@
+applications:
+  # Application 1: Falcon 3-1B Instruct
+  - name: "falcon3-1b-instruct-app"
+    route_prefix: "/falcon3-1b"
+    args:
+      llm_configs:
+        - model_loading_config:
+            model_id: "falcon3-1b-instruct"
+            model_source: "tiiuae/Falcon3-1B-Instruct"
+            type: "VLLM"
+          deployment_config:
+            name: "falcon3-1b-deployment"
+            ray_actor_options:
+              num_cpus: 1  
+              num_gpus: 0.4 
+            autoscaling_config:
+              min_replicas: 1
+              max_replicas: 2  
+              target_ongoing_requests: 50
+            max_ongoing_requests: 256
+          engine_kwargs:
+            tensor_parallel_size: 0  
+            dtype: "bfloat16"
+            gpu_memory_utilization: 0.35 
+            max_model_len: 4096  
+            enforce_eager: false 
+            max_num_seqs: 128 
+            max_num_batched_tokens: 4096
+            trust_remote_code: true
+            disable_custom_all_reduce: true
+
+  - name: "falcon3-3b-instruct-app"
+    route_prefix: "/falcon3-3b"
+    args:
+      llm_configs:
+        - model_loading_config:
+            model_id: "falcon3-3b-instruct"
+            model_source: "tiiuae/Falcon3-3B-Instruct"
+            type: "VLLM"
+          deployment_config:
+            name: "falcon3-3b-deployment"
+            ray_actor_options:
+              num_cpus: 1 
+              num_gpus: 0.55
+            autoscaling_config:
+              min_replicas: 1
+              max_replicas: 1 
+              target_ongoing_requests: 50
+            max_ongoing_requests: 256 
+          engine_kwargs:
+            tensor_parallel_size: 0 
+            dtype: "bfloat16"
+            gpu_memory_utilization: 0.5
+            max_model_len: 4096 
+            enforce_eager: false 
+            max_num_seqs: 128 
+            max_num_batched_tokens: 4096 
+            trust_remote_code: true
+            disable_custom_all_reduce: true
+
+  # - name: "falcone-3b-instruct-app"
+  #   # import_path: "ray.serve.llm:build_openai_app"
+  #   route_prefix: "/falcone-3b-instruct"
+  #   args:
+  #     llm_configs:
+  #       - model_loading_config:
+  #           model_id: "falcone-3b-instruct"
+  #           model_source: "tiiuae/Falcon-E-3B-Instruct"
+  #           type: "VLLM"
+  #         deployment_config:
+  #           name: "falcone-3b-deployment"
+  #           ray_actor_options:
+  #             num_cpus: 1  # Tăng CPU để handle concurrency tốt hơn
+  #             num_gpus: 0.4  # Sử dụng gần như full GPU
+  #           autoscaling_config:
+  #             min_replicas: 1
+  #             max_replicas: 1  # Single GPU = single replica
+  #             target_ongoing_requests: 50
+  #           max_ongoing_requests: 256  # Tăng concurrency limit
+  #         engine_kwargs:
+  #           tensor_parallel_size: 0  # KHÔNG dùng TP trên single GPU (yêu cầu 2+ GPUs)
+  #           dtype: "bfloat16"
+  #           revision: true
+  #           gpu_memory_utilization: 0.9  # Giảm để chia sẻ GPU
+  #           max_model_len: 4096  # Giảm xuống để tiết kiệm memory
+  #           enforce_eager: false  # Sử dụng CUDA graphs để tăng tốc
+  #           max_num_seqs: 128  # Giảm sequences
+  #           max_num_batched_tokens: 4096  # Giảm batch size
+  #           trust_remote_code: true
+  #           disable_custom_all_reduce: true
+
+  # - name: "falcon-h1-0.5b-instruct"
+  #   # import_path: "ray.serve.llm:build_openai_app"
+  #   route_prefix: "/falcon-h1-0.5b-instruct"
+  #   args:
+  #     llm_configs:
+  #       - model_loading_config:
+  #           model_id: "falcon-h1-0.5b-instruct"
+  #           model_source: "tiiuae/Falcon-H1-0.5B-Instruct"
+  #           type: "VLLM"
+  #         deployment_config:
+  #           name: "falcon-h1-0.5b-instruct-deployment"
+  #           ray_actor_options:
+  #             num_cpus: 1  # Tăng CPU để handle concurrency tốt hơn
+  #             num_gpus: 0.4  # Sử dụng gần như full GPU
+  #           autoscaling_config:
+  #             min_replicas: 1
+  #             max_replicas: 1  # Single GPU = single replica
+  #             target_ongoing_requests: 50
+  #           max_ongoing_requests: 256  # Tăng concurrency limit
+  #         engine_kwargs:
+  #           tensor_parallel_size: 0  # KHÔNG dùng TP trên single GPU (yêu cầu 2+ GPUs)
+  #           dtype: "bfloat16"
+  #           # revision: true
+  #           gpu_memory_utilization: 0.9  # Giảm để chia sẻ GPU
+  #           max_model_len: 4096  # Giảm xuống để tiết kiệm memory
+  #           enforce_eager: false  # Sử dụng CUDA graphs để tăng tốc
+  #           max_num_seqs: 128  # Giảm sequences
+  #           max_num_batched_tokens: 4096  # Giảm batch size
+  #           trust_remote_code: true
+  #           disable_custom_all_reduce: true
+
+

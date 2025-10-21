@@ -1,0 +1,519 @@
+🚀 Starting Ray Serve with application name: falcon3-1b-instruct
+2025-10-19 10:58:14,818	INFO scripts.py:507 -- Running import path: 'vllm_host:build_app'.
+INFO 10-19 10:58:18 [__init__.py:216] Automatically detected platform cuda.
+✅ Successfully loaded 1 models from model_config.yaml
+                           Loaded MultiModel Configs                            
+┏━━━━━━━━━━━━━━━━━━━┳━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
+┃ Model ID          ┃ Type ┃ GPU Util ┃ Deployment Name   ┃ Autoscaling        ┃
+┡━━━━━━━━━━━━━━━━━━━╇━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
+│ falcon3-1b-instr… │ VLLM │ 0.4      │ falcon3-1b-deplo… │ {'min_replicas':   │
+│                   │      │          │                   │ 1, 'max_replicas': │
+│                   │      │          │                   │ 1,                 │
+│                   │      │          │                   │ 'target_ongoing_r… │
+│                   │      │          │                   │ 50}                │
+└───────────────────┴──────┴──────────┴───────────────────┴────────────────────┘
+🎮 Using CUDA_VISIBLE_DEVICES=0
+📦 Application name: falcon3-1b-instruct
+  📦 Deployment: falcon3-1b-instruct-deployment
+  🔀 Router: falcon3-1b-instruct-router
+2025-10-19 10:58:21,498	INFO worker.py:1833 -- Connecting to existing Ray cluster at address: 10.0.0.2:6379...
+2025-10-19 10:58:21,512	INFO worker.py:2004 -- Connected to Ray cluster. View the dashboard at [1m[32m127.0.0.1:8265 [39m[22m
+/home/terraform/.local/lib/python3.10/site-packages/ray/_private/worker.py:2052: FutureWarning: Tip: In future versions of Ray, Ray will no longer override accelerator visible devices env var if num_gpus=0 or num_gpus=None (default). To enable this behavior and turn off this error message, set RAY_ACCEL_ENV_VAR_OVERRIDE_ON_ZERO=0
+  warnings.warn(
+INFO 2025-10-19 10:58:21,548 serve 349121 -- Connecting to existing Serve app in namespace "serve". New http options will not be applied.
+INFO 2025-10-19 10:58:21,579 serve 349121 -- Connecting to existing Serve app in namespace "serve". New http options will not be applied.
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:58:21,592 controller 347676 -- Deploying new version of Deployment(name='falcon3-1b-instruct-deployment', app='falcon3-1b-instruct') (initial target replicas: 1).
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:58:21,593 controller 347676 -- Deploying new version of Deployment(name='falcon3-1b-instruct-router', app='falcon3-1b-instruct') (initial target replicas: 2).
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:58:21,702 controller 347676 -- Stopping 1 replicas of Deployment(name='falcon3-1b-instruct-deployment', app='falcon3-1b-instruct') with outdated versions.
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:58:21,703 controller 347676 -- Adding 1 replica to Deployment(name='falcon3-1b-instruct-deployment', app='falcon3-1b-instruct').
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:58:21,703 controller 347676 -- Assigned rank 1 to new replica 16qu8m26 during startup
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:58:21,707 controller 347676 -- Stopping 1 replicas of Deployment(name='falcon3-1b-instruct-router', app='falcon3-1b-instruct') with outdated versions.
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:58:21,708 controller 347676 -- Adding 1 replica to Deployment(name='falcon3-1b-instruct-router', app='falcon3-1b-instruct').
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:58:21,708 controller 347676 -- Assigned rank 2 to new replica u732icmw during startup
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:58:21,853 controller 347676 -- Replica(id='2ny4be2w', deployment='falcon3-1b-instruct-deployment', app='falcon3-1b-instruct') did not shut down after grace period, force-killing it. 
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:58:21,875 controller 347676 -- Replica(id='sh4tjwhv', deployment='falcon3-1b-instruct-router', app='falcon3-1b-instruct') did not shut down after grace period, force-killing it. 
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:58:21,990 controller 347676 -- Replica(id='2ny4be2w', deployment='falcon3-1b-instruct-deployment', app='falcon3-1b-instruct') is stopped.
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:58:21,991 controller 347676 -- Released rank from replica 2ny4be2w in deployment Deployment(name='falcon3-1b-instruct-deployment', app='falcon3-1b-instruct')
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:58:21,993 controller 347676 -- Replica(id='sh4tjwhv', deployment='falcon3-1b-instruct-router', app='falcon3-1b-instruct') is stopped.
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:58:21,993 controller 347676 -- Released rank from replica sh4tjwhv in deployment Deployment(name='falcon3-1b-instruct-router', app='falcon3-1b-instruct')
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m INFO 2025-10-19 10:58:29,757 falcon3-1b-instruct_falcon3-1b-instruct-deployment 16qu8m26 -- ⚙️ CUDA_VISIBLE_DEVICES=0
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m INFO 2025-10-19 10:58:29,757 falcon3-1b-instruct_falcon3-1b-instruct-deployment 16qu8m26 -- 🧩 Registered model in deployment: falcon3-1b-instruct (VLLM)
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m INFO 2025-10-19 10:58:29,763 falcon3-1b-instruct_falcon3-1b-instruct-deployment 16qu8m26 -- 🚀 Starting MultiModelServer with 1 models...
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m {"asctime": "2025-10-19 10:58:29,764", "levelname": "INFO", "message": "\ud83c\udfae VLLMEngine starting with CUDA_VISIBLE_DEVICES=0", "filename": "vllm_engine.py", "lineno": 13, "process": 349248, "job_id": "03000000", "worker_id": "cf1c9602c599516bea9e87a60ddaa4a5588b8a8287acd0d3032fdc28", "node_id": "b96e171cd0aa83d1a5402dcfc4622ddf4439aa81a49a625d06c9d207", "actor_id": "00e32bb7b8419bdfb856ddf303000000", "task_id": "75d65b1b8dad99c300e32bb7b8419bdfb856ddf303000000", "task_name": "ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment.initialize_and_get_metadata", "task_func_name": "ray.serve._private.replica.ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment.initialize_and_get_metadata", "actor_name": "SERVE_REPLICA::falcon3-1b-instruct#falcon3-1b-instruct-deployment#16qu8m26", "timestamp_ns": 1760871509764135473}
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m The argument `trust_remote_code` is to be used with Auto classes. It has no effect here and is ignored.
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m `torch_dtype` is deprecated! Use `dtype` instead!
+[36m(ServeController pid=347676)[0m WARNING 2025-10-19 10:58:39,103 controller 347676 -- Deployment 'falcon3-1b-instruct-router' in application 'falcon3-1b-instruct' has 1 replicas that have taken more than 30s to initialize.
+[36m(ServeController pid=347676)[0m This may be caused by a slow __init__ or reconfigure method.
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m INFO 10-19 10:58:27 [__init__.py:216] Automatically detected platform cuda.
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m INFO 10-19 10:58:29 [utils.py:233] non-default args: {'trust_remote_code': True, 'dtype': 'float16', 'max_model_len': 8192, 'gpu_memory_utilization': 0.4, 'max_num_batched_tokens': 32768, 'max_num_seqs': 256, 'disable_log_stats': True, 'disable_custom_all_reduce': True, 'model': 'tiiuae/Falcon3-1B-Instruct'}
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m INFO 10-19 10:58:31 [model.py:547] Resolved architecture: LlamaForCausalLM
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m WARNING 10-19 10:58:31 [model.py:1733] Casting torch.bfloat16 to torch.float16.
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m INFO 10-19 10:58:31 [model.py:1510] Using max model len 8192
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m INFO 10-19 10:58:31 [arg_utils.py:1215] Using ray runtime env: {'env_vars': {'CUDA_VISIBLE_DEVICES': '0'}}
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m INFO 10-19 10:58:31 [scheduler.py:205] Chunked prefill is enabled with max_num_batched_tokens=32768.
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m WARNING 10-19 10:58:32 [__init__.py:3036] We must use the `spawn` multiprocessing start method. Overriding VLLM_WORKER_MULTIPROC_METHOD to 'spawn'. See https://docs.vllm.ai/en/latest/usage/troubleshooting.html#python-multiprocessing for more information. Reasons: In a Ray actor and can only be spawned
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m INFO 10-19 10:58:38 [__init__.py:216] Automatically detected platform cuda.
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m INFO 10-19 10:58:39 [core.py:644] Waiting for init message from front-end.
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m INFO 10-19 10:58:39 [core.py:77] Initializing a V1 LLM engine (v0.11.0) with config: model='tiiuae/Falcon3-1B-Instruct', speculative_config=None, tokenizer='tiiuae/Falcon3-1B-Instruct', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=True, dtype=torch.float16, max_seq_len=8192, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, disable_custom_all_reduce=True, quantization=None, enforce_eager=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_fallback=False, disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser=''), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None), seed=0, served_model_name=tiiuae/Falcon3-1B-Instruct, enable_prefix_caching=True, chunked_prefill_enabled=True, pooler_config=None, compilation_config={"level":3,"debug_dump_path":"","cache_dir":"","backend":"","custom_ops":[],"splitting_ops":["vllm.unified_attention","vllm.unified_attention_with_output","vllm.mamba_mixer2","vllm.mamba_mixer","vllm.short_conv","vllm.linear_attention","vllm.plamo2_mamba_mixer","vllm.gdn_attention","vllm.sparse_attn_indexer"],"use_inductor":true,"compile_sizes":[],"inductor_compile_config":{"enable_auto_functionalized_v2":false},"inductor_passes":{},"cudagraph_mode":[2,1],"use_cudagraph":true,"cudagraph_num_of_warmups":1,"cudagraph_capture_sizes":[512,504,496,488,480,472,464,456,448,440,432,424,416,408,400,392,384,376,368,360,352,344,336,328,320,312,304,296,288,280,272,264,256,248,240,232,224,216,208,200,192,184,176,168,160,152,144,136,128,120,112,104,96,88,80,72,64,56,48,40,32,24,16,8,4,2,1],"cudagraph_copy_inputs":false,"full_cuda_graph":false,"use_inductor_graph_partition":false,"pass_config":{},"max_capture_size":512,"local_cache_dir":null}
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m INFO 10-19 10:58:42 [parallel_state.py:1208] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, TP rank 0, EP rank 0
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m ERROR 10-19 10:58:43 [core.py:708] EngineCore failed to start.
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m ERROR 10-19 10:58:43 [core.py:708] Traceback (most recent call last):
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m ERROR 10-19 10:58:43 [core.py:708]   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/engine/core.py", line 699, in run_engine_core
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m ERROR 10-19 10:58:43 [core.py:708]     engine_core = EngineCoreProc(*args, **kwargs)
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m ERROR 10-19 10:58:43 [core.py:708]   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/engine/core.py", line 498, in __init__
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m ERROR 10-19 10:58:43 [core.py:708]     super().__init__(vllm_config, executor_class, log_stats,
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m ERROR 10-19 10:58:43 [core.py:708]   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/engine/core.py", line 83, in __init__
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m ERROR 10-19 10:58:43 [core.py:708]     self.model_executor = executor_class(vllm_config)
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m ERROR 10-19 10:58:43 [core.py:708]   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/executor/executor_base.py", line 54, in __init__
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m ERROR 10-19 10:58:43 [core.py:708]     self._init_executor()
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m ERROR 10-19 10:58:43 [core.py:708]   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/executor/uniproc_executor.py", line 54, in _init_executor
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m Process EngineCore_DP0:
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m Traceback (most recent call last):
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m   File "/usr/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m     self.run()
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m   File "/usr/lib/python3.10/multiprocessing/process.py", line 108, in run
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m     self._target(*self._args, **self._kwargs)
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/engine/core.py", line 712, in run_engine_core
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m     raise e
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/engine/core.py", line 699, in run_engine_core
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m     engine_core = EngineCoreProc(*args, **kwargs)
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/engine/core.py", line 498, in __init__
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m     super().__init__(vllm_config, executor_class, log_stats,
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/engine/core.py", line 83, in __init__
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m     self.model_executor = executor_class(vllm_config)
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/executor/executor_base.py", line 54, in __init__
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m     self._init_executor()
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/executor/uniproc_executor.py", line 54, in _init_executor
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m     self.collective_rpc("init_device")
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/executor/uniproc_executor.py", line 83, in collective_rpc
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m     return [run_method(self.driver_worker, method, args, kwargs)]
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/utils/__init__.py", line 3122, in run_method
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m     return func(*args, **kwargs)
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/worker/worker_base.py", line 259, in init_device
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m     self.worker.init_device()  # type: ignore
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/worker/gpu_worker.py", line 187, in init_device
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m     raise ValueError(
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m ValueError: Free memory on device (4.34/22.03 GiB) on startup is less than desired GPU memory utilization (0.4, 8.81 GiB). Decrease GPU memory utilization or reduce GPU memory used by other processes.
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [rank0]:[W1019 10:58:44.303383406 ProcessGroupNCCL.cpp:1538] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m WARNING 2025-10-19 10:58:45,111 falcon3-1b-instruct_falcon3-1b-instruct-deployment 16qu8m26 -- Replica health check failed.
+[36m(ServeController pid=347676)[0m ERROR 2025-10-19 10:58:45,145 controller 347676 -- Exception in Replica(id='16qu8m26', deployment='falcon3-1b-instruct-deployment', app='falcon3-1b-instruct'), the replica will be stopped.
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/serve/_private/deployment_state.py", line 771, in check_ready
+[36m(ServeController pid=347676)[0m     ) = ray.get(self._ready_obj_ref)
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 22, in auto_init_wrapper
+[36m(ServeController pid=347676)[0m     return fn(*args, **kwargs)
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 104, in wrapper
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/_private/worker.py", line 2962, in get
+[36m(ServeController pid=347676)[0m     values, debugger_breakpoint = worker.get_objects(
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/_private/worker.py", line 1026, in get_objects
+[36m(ServeController pid=347676)[0m     raise value.as_instanceof_cause()
+[36m(ServeController pid=347676)[0m ray.exceptions.RayTaskError(RuntimeError): [36mray::ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment.initialize_and_get_metadata()[39m (pid=349248, ip=10.0.0.2, actor_id=00e32bb7b8419bdfb856ddf303000000, repr=<ray.serve._private.replica.ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment object at 0x7c6e4c28d360>)
+[36m(ServeController pid=347676)[0m   File "/usr/lib/python3.10/concurrent/futures/_base.py", line 458, in result
+[36m(ServeController pid=347676)[0m     return self.__get_result()
+[36m(ServeController pid=347676)[0m   File "/usr/lib/python3.10/concurrent/futures/_base.py", line 403, in __get_result
+[36m(ServeController pid=347676)[0m     raise self._exception
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/serve/_private/replica.py", line 1184, in initialize_and_get_metadata
+[36m(ServeController pid=347676)[0m     await self._replica_impl.initialize(deployment_config)
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/serve/_private/replica.py", line 887, in initialize
+[36m(ServeController pid=347676)[0m     raise RuntimeError(traceback.format_exc()) from None
+[36m(ServeController pid=347676)[0m RuntimeError: Traceback (most recent call last):
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/serve/_private/replica.py", line 885, in initialize
+[36m(ServeController pid=347676)[0m     await self.check_health()
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/serve/_private/replica.py", line 1021, in check_health
+[36m(ServeController pid=347676)[0m     raise e from None
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/serve/_private/replica.py", line 1016, in check_health
+[36m(ServeController pid=347676)[0m     await f
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/serve/_private/replica.py", line 1670, in _call_user_health_check
+[36m(ServeController pid=347676)[0m     await self._call_func_or_gen(self._user_health_check)
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/serve/_private/replica.py", line 1549, in _call_func_or_gen
+[36m(ServeController pid=347676)[0m     result = await result
+[36m(ServeController pid=347676)[0m   File "/home/terraform/ray/./serve/deployments/multi_model_deployment.py", line 84, in check_health
+[36m(ServeController pid=347676)[0m     await self._ensure_started()
+[36m(ServeController pid=347676)[0m   File "/home/terraform/ray/./serve/deployments/multi_model_deployment.py", line 67, in _ensure_started
+[36m(ServeController pid=347676)[0m     await self._start_task
+[36m(ServeController pid=347676)[0m   File "/home/terraform/ray/serve/deployments/multi_model_server.py", line 43, in start
+[36m(ServeController pid=347676)[0m     await asyncio.gather(*tasks)
+[36m(ServeController pid=347676)[0m   File "/home/terraform/ray/serve/deployments/multi_model_server.py", line 58, in _start_model
+[36m(ServeController pid=347676)[0m     await engine.start()
+[36m(ServeController pid=347676)[0m   File "/home/terraform/ray/servers/vllm_engine.py", line 21, in start
+[36m(ServeController pid=347676)[0m     self.model = await loop.run_in_executor(None, lambda: LLM(self.model_source, **kwargs))
+[36m(ServeController pid=347676)[0m     result = self.fn(*self.args, **self.kwargs)
+[36m(ServeController pid=347676)[0m   File "/home/terraform/ray/servers/vllm_engine.py", line 21, in <lambda>
+[36m(ServeController pid=347676)[0m     self.model = await loop.run_in_executor(None, lambda: LLM(self.model_source, **kwargs))
+[36m(ServeController pid=347676)[0m     self.llm_engine = LLMEngine.from_engine_args(
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/engine/llm_engine.py", line 177, in from_engine_args
+[36m(ServeController pid=347676)[0m     return cls(vllm_config=vllm_config,
+[36m(ServeController pid=347676)[0m     self.engine_core = EngineCoreClient.make_client(
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/engine/core_client.py", line 80, in make_client
+[36m(ServeController pid=347676)[0m     return SyncMPClient(vllm_config, executor_class, log_stats)
+[36m(ServeController pid=347676)[0m     super().__init__(
+[36m(ServeController pid=347676)[0m     with launch_core_engines(vllm_config, executor_class,
+[36m(ServeController pid=347676)[0m   File "/usr/lib/python3.10/contextlib.py", line 142, in __exit__
+[36m(ServeController pid=347676)[0m     next(self.gen)
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/engine/utils.py", line 732, in launch_core_engines
+[36m(ServeController pid=347676)[0m     wait_for_engine_startup(
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/engine/utils.py", line 785, in wait_for_engine_startup
+[36m(ServeController pid=347676)[0m     raise RuntimeError("Engine core initialization failed. "
+[36m(ServeController pid=347676)[0m RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:58:45,155 controller 347676 -- Adding 1 replica to Deployment(name='falcon3-1b-instruct-deployment', app='falcon3-1b-instruct').
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:58:45,155 controller 347676 -- Assigned rank 0 to new replica c4ktf00m during startup
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:58:47,182 controller 347676 -- Replica(id='16qu8m26', deployment='falcon3-1b-instruct-deployment', app='falcon3-1b-instruct') is stopped.
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:58:47,183 controller 347676 -- Released rank from replica 16qu8m26 in deployment Deployment(name='falcon3-1b-instruct-deployment', app='falcon3-1b-instruct')
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m INFO 2025-10-19 10:58:53,302 falcon3-1b-instruct_falcon3-1b-instruct-deployment c4ktf00m -- ⚙️ CUDA_VISIBLE_DEVICES=0
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m INFO 2025-10-19 10:58:53,302 falcon3-1b-instruct_falcon3-1b-instruct-deployment c4ktf00m -- 🧩 Registered model in deployment: falcon3-1b-instruct (VLLM)
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m INFO 2025-10-19 10:58:53,309 falcon3-1b-instruct_falcon3-1b-instruct-deployment c4ktf00m -- 🚀 Starting MultiModelServer with 1 models...
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m {"asctime": "2025-10-19 10:58:53,309", "levelname": "INFO", "message": "\ud83c\udfae VLLMEngine starting with CUDA_VISIBLE_DEVICES=0", "filename": "vllm_engine.py", "lineno": 13, "process": 349458, "job_id": "03000000", "worker_id": "1f33d7b70adf190e9c3ca90fb8b24cb1da403671df4c188eccde1d1f", "node_id": "b96e171cd0aa83d1a5402dcfc4622ddf4439aa81a49a625d06c9d207", "actor_id": "99b7b02523762992e24a9a6903000000", "task_id": "1f4cd9b5f4d4ef3a99b7b02523762992e24a9a6903000000", "task_name": "ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment.initialize_and_get_metadata", "task_func_name": "ray.serve._private.replica.ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment.initialize_and_get_metadata", "actor_name": "SERVE_REPLICA::falcon3-1b-instruct#falcon3-1b-instruct-deployment#c4ktf00m", "timestamp_ns": 1760871533309831252}
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m The argument `trust_remote_code` is to be used with Auto classes. It has no effect here and is ignored.
+[36m(ServeController pid=347676)[0m Traceback (most recent call last):
+[36m(ServeController pid=347676)[0m   File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/engine/core_client.py", line 448, in __init__[32m [repeated 4x across cluster] (Ray deduplicates logs by default. Set RAY_DEDUP_LOGS=0 to disable log deduplication, or see https://docs.ray.io/en/master/ray-observability/user-guides/configure-logging.html#log-deduplication for more options.)[0m
+[36m(ServeController pid=347676)[0m     return func(*args, **kwargs)
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m `torch_dtype` is deprecated! Use `dtype` instead!
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m ERROR 10-19 10:58:43 [core.py:708]     self.collective_rpc("init_device")
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m ERROR 10-19 10:58:43 [core.py:708]   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/executor/uniproc_executor.py", line 83, in collective_rpc
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m ERROR 10-19 10:58:43 [core.py:708]     return [run_method(self.driver_worker, method, args, kwargs)]
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m ERROR 10-19 10:58:43 [core.py:708]   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/utils/__init__.py", line 3122, in run_method
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m ERROR 10-19 10:58:43 [core.py:708]     return func(*args, **kwargs)
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m ERROR 10-19 10:58:43 [core.py:708]   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/worker/worker_base.py", line 259, in init_device
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m ERROR 10-19 10:58:43 [core.py:708]     self.worker.init_device()  # type: ignore
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m ERROR 10-19 10:58:43 [core.py:708]   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/worker/gpu_worker.py", line 187, in init_device
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m ERROR 10-19 10:58:43 [core.py:708]     raise ValueError(
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349248)[0m [1;36m(EngineCore_DP0 pid=349382)[0;0m ERROR 10-19 10:58:43 [core.py:708] ValueError: Free memory on device (4.34/22.03 GiB) on startup is less than desired GPU memory utilization (0.4, 8.81 GiB). Decrease GPU memory utilization or reduce GPU memory used by other processes.
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m INFO 10-19 10:58:50 [__init__.py:216] Automatically detected platform cuda.
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m INFO 10-19 10:58:53 [utils.py:233] non-default args: {'trust_remote_code': True, 'dtype': 'float16', 'max_model_len': 8192, 'gpu_memory_utilization': 0.4, 'max_num_batched_tokens': 32768, 'max_num_seqs': 256, 'disable_log_stats': True, 'disable_custom_all_reduce': True, 'model': 'tiiuae/Falcon3-1B-Instruct'}
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m INFO 10-19 10:58:54 [model.py:547] Resolved architecture: LlamaForCausalLM
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m WARNING 10-19 10:58:54 [model.py:1733] Casting torch.bfloat16 to torch.float16.
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m INFO 10-19 10:58:54 [model.py:1510] Using max model len 8192
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m INFO 10-19 10:58:54 [arg_utils.py:1215] Using ray runtime env: {'env_vars': {'CUDA_VISIBLE_DEVICES': '0'}}
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m INFO 10-19 10:58:54 [scheduler.py:205] Chunked prefill is enabled with max_num_batched_tokens=32768.
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m WARNING 10-19 10:58:56 [__init__.py:3036] We must use the `spawn` multiprocessing start method. Overriding VLLM_WORKER_MULTIPROC_METHOD to 'spawn'. See https://docs.vllm.ai/en/latest/usage/troubleshooting.html#python-multiprocessing for more information. Reasons: In a Ray actor and can only be spawned
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m INFO 10-19 10:59:01 [__init__.py:216] Automatically detected platform cuda.
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m INFO 10-19 10:59:03 [core.py:644] Waiting for init message from front-end.
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m INFO 10-19 10:59:03 [core.py:77] Initializing a V1 LLM engine (v0.11.0) with config: model='tiiuae/Falcon3-1B-Instruct', speculative_config=None, tokenizer='tiiuae/Falcon3-1B-Instruct', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=True, dtype=torch.float16, max_seq_len=8192, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, disable_custom_all_reduce=True, quantization=None, enforce_eager=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_fallback=False, disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser=''), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None), seed=0, served_model_name=tiiuae/Falcon3-1B-Instruct, enable_prefix_caching=True, chunked_prefill_enabled=True, pooler_config=None, compilation_config={"level":3,"debug_dump_path":"","cache_dir":"","backend":"","custom_ops":[],"splitting_ops":["vllm.unified_attention","vllm.unified_attention_with_output","vllm.mamba_mixer2","vllm.mamba_mixer","vllm.short_conv","vllm.linear_attention","vllm.plamo2_mamba_mixer","vllm.gdn_attention","vllm.sparse_attn_indexer"],"use_inductor":true,"compile_sizes":[],"inductor_compile_config":{"enable_auto_functionalized_v2":false},"inductor_passes":{},"cudagraph_mode":[2,1],"use_cudagraph":true,"cudagraph_num_of_warmups":1,"cudagraph_capture_sizes":[512,504,496,488,480,472,464,456,448,440,432,424,416,408,400,392,384,376,368,360,352,344,336,328,320,312,304,296,288,280,272,264,256,248,240,232,224,216,208,200,192,184,176,168,160,152,144,136,128,120,112,104,96,88,80,72,64,56,48,40,32,24,16,8,4,2,1],"cudagraph_copy_inputs":false,"full_cuda_graph":false,"use_inductor_graph_partition":false,"pass_config":{},"max_capture_size":512,"local_cache_dir":null}
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m INFO 10-19 10:59:06 [parallel_state.py:1208] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, TP rank 0, EP rank 0
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m Process EngineCore_DP0:
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m Traceback (most recent call last):
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m   File "/usr/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m     self.run()
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m   File "/usr/lib/python3.10/multiprocessing/process.py", line 108, in run
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m     self._target(*self._args, **self._kwargs)
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/engine/core.py", line 712, in run_engine_core
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m     raise e
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/engine/core.py", line 699, in run_engine_core
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m     engine_core = EngineCoreProc(*args, **kwargs)
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m     super().__init__(vllm_config, executor_class, log_stats,
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m     self.model_executor = executor_class(vllm_config)
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m     self._init_executor()
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/executor/uniproc_executor.py", line 54, in _init_executor
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m     self.collective_rpc("init_device")
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/executor/uniproc_executor.py", line 83, in collective_rpc
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m     return [run_method(self.driver_worker, method, args, kwargs)]
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/utils/__init__.py", line 3122, in run_method
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m     return func(*args, **kwargs)
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/worker/worker_base.py", line 259, in init_device
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m     self.worker.init_device()  # type: ignore
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/worker/gpu_worker.py", line 187, in init_device
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m     raise ValueError(
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m ValueError: Free memory on device (4.34/22.03 GiB) on startup is less than desired GPU memory utilization (0.4, 8.81 GiB). Decrease GPU memory utilization or reduce GPU memory used by other processes.
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/executor/executor_base.py", line 54, in __init__[32m [repeated 3x across cluster][0m
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [rank0]:[W1019 10:59:07.092054241 ProcessGroupNCCL.cpp:1538] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m WARNING 2025-10-19 10:59:08,895 falcon3-1b-instruct_falcon3-1b-instruct-deployment c4ktf00m -- Replica health check failed.
+[36m(ServeController pid=347676)[0m ERROR 2025-10-19 10:59:08,980 controller 347676 -- Exception in Replica(id='c4ktf00m', deployment='falcon3-1b-instruct-deployment', app='falcon3-1b-instruct'), the replica will be stopped.
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/serve/_private/deployment_state.py", line 771, in check_ready
+[36m(ServeController pid=347676)[0m     ) = ray.get(self._ready_obj_ref)
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 22, in auto_init_wrapper
+[36m(ServeController pid=347676)[0m     return fn(*args, **kwargs)
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 104, in wrapper
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/_private/worker.py", line 2962, in get
+[36m(ServeController pid=347676)[0m     values, debugger_breakpoint = worker.get_objects(
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/_private/worker.py", line 1026, in get_objects
+[36m(ServeController pid=347676)[0m     raise value.as_instanceof_cause()
+[36m(ServeController pid=347676)[0m ray.exceptions.RayTaskError(RuntimeError): [36mray::ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment.initialize_and_get_metadata()[39m (pid=349458, ip=10.0.0.2, actor_id=99b7b02523762992e24a9a6903000000, repr=<ray.serve._private.replica.ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment object at 0x789bbffd5270>)
+[36m(ServeController pid=347676)[0m   File "/usr/lib/python3.10/concurrent/futures/_base.py", line 451, in result
+[36m(ServeController pid=347676)[0m     return self.__get_result()
+[36m(ServeController pid=347676)[0m   File "/usr/lib/python3.10/concurrent/futures/_base.py", line 403, in __get_result
+[36m(ServeController pid=347676)[0m     raise self._exception
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/serve/_private/replica.py", line 1184, in initialize_and_get_metadata
+[36m(ServeController pid=347676)[0m     await self._replica_impl.initialize(deployment_config)
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/serve/_private/replica.py", line 887, in initialize
+[36m(ServeController pid=347676)[0m     raise RuntimeError(traceback.format_exc()) from None
+[36m(ServeController pid=347676)[0m RuntimeError: Traceback (most recent call last):
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/serve/_private/replica.py", line 885, in initialize
+[36m(ServeController pid=347676)[0m     await self.check_health()
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/serve/_private/replica.py", line 1021, in check_health
+[36m(ServeController pid=347676)[0m     raise e from None
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/serve/_private/replica.py", line 1016, in check_health
+[36m(ServeController pid=347676)[0m     await f
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/serve/_private/replica.py", line 1670, in _call_user_health_check
+[36m(ServeController pid=347676)[0m     await self._call_func_or_gen(self._user_health_check)
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/serve/_private/replica.py", line 1549, in _call_func_or_gen
+[36m(ServeController pid=347676)[0m     result = await result
+[36m(ServeController pid=347676)[0m   File "/home/terraform/ray/./serve/deployments/multi_model_deployment.py", line 84, in check_health
+[36m(ServeController pid=347676)[0m     await self._ensure_started()
+[36m(ServeController pid=347676)[0m   File "/home/terraform/ray/./serve/deployments/multi_model_deployment.py", line 67, in _ensure_started
+[36m(ServeController pid=347676)[0m     await self._start_task
+[36m(ServeController pid=347676)[0m   File "/home/terraform/ray/serve/deployments/multi_model_server.py", line 43, in start
+[36m(ServeController pid=347676)[0m     await asyncio.gather(*tasks)
+[36m(ServeController pid=347676)[0m   File "/home/terraform/ray/serve/deployments/multi_model_server.py", line 58, in _start_model
+[36m(ServeController pid=347676)[0m     await engine.start()
+[36m(ServeController pid=347676)[0m   File "/home/terraform/ray/servers/vllm_engine.py", line 21, in start
+[36m(ServeController pid=347676)[0m     self.model = await loop.run_in_executor(None, lambda: LLM(self.model_source, **kwargs))
+[36m(ServeController pid=347676)[0m     result = self.fn(*self.args, **self.kwargs)
+[36m(ServeController pid=347676)[0m   File "/home/terraform/ray/servers/vllm_engine.py", line 21, in <lambda>
+[36m(ServeController pid=347676)[0m     self.model = await loop.run_in_executor(None, lambda: LLM(self.model_source, **kwargs))
+[36m(ServeController pid=347676)[0m     self.llm_engine = LLMEngine.from_engine_args(
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/engine/llm_engine.py", line 177, in from_engine_args
+[36m(ServeController pid=347676)[0m     return cls(vllm_config=vllm_config,
+[36m(ServeController pid=347676)[0m     self.engine_core = EngineCoreClient.make_client(
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/engine/core_client.py", line 80, in make_client
+[36m(ServeController pid=347676)[0m     return SyncMPClient(vllm_config, executor_class, log_stats)
+[36m(ServeController pid=347676)[0m     super().__init__(
+[36m(ServeController pid=347676)[0m     with launch_core_engines(vllm_config, executor_class,
+[36m(ServeController pid=347676)[0m   File "/usr/lib/python3.10/contextlib.py", line 142, in __exit__
+[36m(ServeController pid=347676)[0m     next(self.gen)
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/engine/utils.py", line 732, in launch_core_engines
+[36m(ServeController pid=347676)[0m     wait_for_engine_startup(
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/engine/utils.py", line 785, in wait_for_engine_startup
+[36m(ServeController pid=347676)[0m     raise RuntimeError("Engine core initialization failed. "
+[36m(ServeController pid=347676)[0m RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:59:08,983 controller 347676 -- Adding 1 replica to Deployment(name='falcon3-1b-instruct-deployment', app='falcon3-1b-instruct').
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:59:08,984 controller 347676 -- Assigned rank 1 to new replica v9xgbglp during startup
+[36m(ServeController pid=347676)[0m WARNING 2025-10-19 10:59:09,203 controller 347676 -- Deployment 'falcon3-1b-instruct-router' in application 'falcon3-1b-instruct' has 2 replicas that have taken more than 30s to initialize.
+[36m(ServeController pid=347676)[0m This may be caused by a slow __init__ or reconfigure method.
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:59:11,026 controller 347676 -- Replica(id='c4ktf00m', deployment='falcon3-1b-instruct-deployment', app='falcon3-1b-instruct') is stopped.
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:59:11,027 controller 347676 -- Released rank from replica c4ktf00m in deployment Deployment(name='falcon3-1b-instruct-deployment', app='falcon3-1b-instruct')
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m INFO 2025-10-19 10:59:17,394 falcon3-1b-instruct_falcon3-1b-instruct-deployment v9xgbglp -- ⚙️ CUDA_VISIBLE_DEVICES=0
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m INFO 2025-10-19 10:59:17,394 falcon3-1b-instruct_falcon3-1b-instruct-deployment v9xgbglp -- 🧩 Registered model in deployment: falcon3-1b-instruct (VLLM)
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m INFO 2025-10-19 10:59:17,401 falcon3-1b-instruct_falcon3-1b-instruct-deployment v9xgbglp -- 🚀 Starting MultiModelServer with 1 models...
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m {"asctime": "2025-10-19 10:59:17,401", "levelname": "INFO", "message": "\ud83c\udfae VLLMEngine starting with CUDA_VISIBLE_DEVICES=0", "filename": "vllm_engine.py", "lineno": 13, "process": 349620, "job_id": "03000000", "worker_id": "000dadf89a88cb348abba419a66f8b1e84e46fa512ce18222801325e", "node_id": "b96e171cd0aa83d1a5402dcfc4622ddf4439aa81a49a625d06c9d207", "actor_id": "89e3e266fe311edaa0562f7a03000000", "task_id": "0b88b35faaaaa8b789e3e266fe311edaa0562f7a03000000", "task_name": "ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment.initialize_and_get_metadata", "task_func_name": "ray.serve._private.replica.ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment.initialize_and_get_metadata", "actor_name": "SERVE_REPLICA::falcon3-1b-instruct#falcon3-1b-instruct-deployment#v9xgbglp", "timestamp_ns": 1760871557401586339}
+[36m(ServeController pid=347676)[0m Traceback (most recent call last):
+[36m(ServeController pid=347676)[0m   File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+[36m(ServeController pid=347676)[0m     return func(*args, **kwargs)
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/engine/core_client.py", line 448, in __init__[32m [repeated 4x across cluster][0m
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m The argument `trust_remote_code` is to be used with Auto classes. It has no effect here and is ignored.
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m `torch_dtype` is deprecated! Use `dtype` instead!
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m ERROR 10-19 10:59:06 [core.py:708] EngineCore failed to start.
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m ERROR 10-19 10:59:06 [core.py:708] Traceback (most recent call last):
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m ERROR 10-19 10:59:06 [core.py:708]   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/engine/core.py", line 699, in run_engine_core
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m ERROR 10-19 10:59:06 [core.py:708]     engine_core = EngineCoreProc(*args, **kwargs)
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m ERROR 10-19 10:59:06 [core.py:708]   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/engine/core.py", line 498, in __init__
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m ERROR 10-19 10:59:06 [core.py:708]     super().__init__(vllm_config, executor_class, log_stats,
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m ERROR 10-19 10:59:06 [core.py:708]   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/engine/core.py", line 83, in __init__
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m ERROR 10-19 10:59:06 [core.py:708]     self.model_executor = executor_class(vllm_config)
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m ERROR 10-19 10:59:06 [core.py:708]   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/executor/executor_base.py", line 54, in __init__
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m ERROR 10-19 10:59:06 [core.py:708]     self._init_executor()
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m ERROR 10-19 10:59:06 [core.py:708]   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/executor/uniproc_executor.py", line 54, in _init_executor
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m ERROR 10-19 10:59:06 [core.py:708]     self.collective_rpc("init_device")
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m ERROR 10-19 10:59:06 [core.py:708]   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/executor/uniproc_executor.py", line 83, in collective_rpc
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m ERROR 10-19 10:59:06 [core.py:708]     return [run_method(self.driver_worker, method, args, kwargs)]
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m ERROR 10-19 10:59:06 [core.py:708]   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/utils/__init__.py", line 3122, in run_method
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m ERROR 10-19 10:59:06 [core.py:708]     return func(*args, **kwargs)
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m ERROR 10-19 10:59:06 [core.py:708]   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/worker/worker_base.py", line 259, in init_device
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m ERROR 10-19 10:59:06 [core.py:708]     self.worker.init_device()  # type: ignore
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m ERROR 10-19 10:59:06 [core.py:708]   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/worker/gpu_worker.py", line 187, in init_device
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m ERROR 10-19 10:59:06 [core.py:708]     raise ValueError(
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349458)[0m [1;36m(EngineCore_DP0 pid=349540)[0;0m ERROR 10-19 10:59:06 [core.py:708] ValueError: Free memory on device (4.34/22.03 GiB) on startup is less than desired GPU memory utilization (0.4, 8.81 GiB). Decrease GPU memory utilization or reduce GPU memory used by other processes.
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m INFO 10-19 10:59:14 [__init__.py:216] Automatically detected platform cuda.
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m INFO 10-19 10:59:17 [utils.py:233] non-default args: {'trust_remote_code': True, 'dtype': 'float16', 'max_model_len': 8192, 'gpu_memory_utilization': 0.4, 'max_num_batched_tokens': 32768, 'max_num_seqs': 256, 'disable_log_stats': True, 'disable_custom_all_reduce': True, 'model': 'tiiuae/Falcon3-1B-Instruct'}
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m INFO 10-19 10:59:18 [model.py:547] Resolved architecture: LlamaForCausalLM
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m WARNING 10-19 10:59:18 [model.py:1733] Casting torch.bfloat16 to torch.float16.
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m INFO 10-19 10:59:18 [model.py:1510] Using max model len 8192
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m INFO 10-19 10:59:18 [arg_utils.py:1215] Using ray runtime env: {'env_vars': {'CUDA_VISIBLE_DEVICES': '0'}}
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m INFO 10-19 10:59:18 [scheduler.py:205] Chunked prefill is enabled with max_num_batched_tokens=32768.
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m WARNING 10-19 10:59:20 [__init__.py:3036] We must use the `spawn` multiprocessing start method. Overriding VLLM_WORKER_MULTIPROC_METHOD to 'spawn'. See https://docs.vllm.ai/en/latest/usage/troubleshooting.html#python-multiprocessing for more information. Reasons: In a Ray actor and can only be spawned
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m INFO 10-19 10:59:25 [__init__.py:216] Automatically detected platform cuda.
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m INFO 10-19 10:59:27 [core.py:644] Waiting for init message from front-end.
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m INFO 10-19 10:59:27 [core.py:77] Initializing a V1 LLM engine (v0.11.0) with config: model='tiiuae/Falcon3-1B-Instruct', speculative_config=None, tokenizer='tiiuae/Falcon3-1B-Instruct', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=True, dtype=torch.float16, max_seq_len=8192, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, disable_custom_all_reduce=True, quantization=None, enforce_eager=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_fallback=False, disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser=''), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None), seed=0, served_model_name=tiiuae/Falcon3-1B-Instruct, enable_prefix_caching=True, chunked_prefill_enabled=True, pooler_config=None, compilation_config={"level":3,"debug_dump_path":"","cache_dir":"","backend":"","custom_ops":[],"splitting_ops":["vllm.unified_attention","vllm.unified_attention_with_output","vllm.mamba_mixer2","vllm.mamba_mixer","vllm.short_conv","vllm.linear_attention","vllm.plamo2_mamba_mixer","vllm.gdn_attention","vllm.sparse_attn_indexer"],"use_inductor":true,"compile_sizes":[],"inductor_compile_config":{"enable_auto_functionalized_v2":false},"inductor_passes":{},"cudagraph_mode":[2,1],"use_cudagraph":true,"cudagraph_num_of_warmups":1,"cudagraph_capture_sizes":[512,504,496,488,480,472,464,456,448,440,432,424,416,408,400,392,384,376,368,360,352,344,336,328,320,312,304,296,288,280,272,264,256,248,240,232,224,216,208,200,192,184,176,168,160,152,144,136,128,120,112,104,96,88,80,72,64,56,48,40,32,24,16,8,4,2,1],"cudagraph_copy_inputs":false,"full_cuda_graph":false,"use_inductor_graph_partition":false,"pass_config":{},"max_capture_size":512,"local_cache_dir":null}
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m INFO 10-19 10:59:30 [parallel_state.py:1208] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, TP rank 0, EP rank 0
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m ERROR 10-19 10:59:31 [core.py:708] EngineCore failed to start.
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m ERROR 10-19 10:59:31 [core.py:708] Traceback (most recent call last):
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m ERROR 10-19 10:59:31 [core.py:708]   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/engine/core.py", line 699, in run_engine_core
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m ERROR 10-19 10:59:31 [core.py:708]     engine_core = EngineCoreProc(*args, **kwargs)
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m ERROR 10-19 10:59:31 [core.py:708]   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/engine/core.py", line 498, in __init__
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m ERROR 10-19 10:59:31 [core.py:708]     super().__init__(vllm_config, executor_class, log_stats,
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m ERROR 10-19 10:59:31 [core.py:708]   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/engine/core.py", line 83, in __init__
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m ERROR 10-19 10:59:31 [core.py:708]     self.model_executor = executor_class(vllm_config)
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m ERROR 10-19 10:59:31 [core.py:708]   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/executor/executor_base.py", line 54, in __init__
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m ERROR 10-19 10:59:31 [core.py:708]     self._init_executor()
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m ERROR 10-19 10:59:31 [core.py:708]   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/executor/uniproc_executor.py", line 54, in _init_executor
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m ERROR 10-19 10:59:31 [core.py:708]     self.collective_rpc("init_device")
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m ERROR 10-19 10:59:31 [core.py:708]   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/executor/uniproc_executor.py", line 83, in collective_rpc
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m ERROR 10-19 10:59:31 [core.py:708]     return [run_method(self.driver_worker, method, args, kwargs)]
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m ERROR 10-19 10:59:31 [core.py:708]   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/utils/__init__.py", line 3122, in run_method
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m ERROR 10-19 10:59:31 [core.py:708]     return func(*args, **kwargs)
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m ERROR 10-19 10:59:31 [core.py:708]   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/worker/worker_base.py", line 259, in init_device
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m ERROR 10-19 10:59:31 [core.py:708]     self.worker.init_device()  # type: ignore
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m ERROR 10-19 10:59:31 [core.py:708]   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/worker/gpu_worker.py", line 187, in init_device
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m ERROR 10-19 10:59:31 [core.py:708]     raise ValueError(
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m Process EngineCore_DP0:
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m Traceback (most recent call last):
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m   File "/usr/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m     self.run()
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m   File "/usr/lib/python3.10/multiprocessing/process.py", line 108, in run
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m     self._target(*self._args, **self._kwargs)
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/engine/core.py", line 712, in run_engine_core
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m     raise e
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/engine/core.py", line 699, in run_engine_core
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m     engine_core = EngineCoreProc(*args, **kwargs)
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m     super().__init__(vllm_config, executor_class, log_stats,
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m     self.model_executor = executor_class(vllm_config)
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m     self._init_executor()
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/executor/uniproc_executor.py", line 54, in _init_executor
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m     self.collective_rpc("init_device")
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/executor/uniproc_executor.py", line 83, in collective_rpc
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m     return [run_method(self.driver_worker, method, args, kwargs)]
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/utils/__init__.py", line 3122, in run_method
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m     return func(*args, **kwargs)
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/worker/worker_base.py", line 259, in init_device
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m     self.worker.init_device()  # type: ignore
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/worker/gpu_worker.py", line 187, in init_device
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m     raise ValueError(
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m ValueError: Free memory on device (4.34/22.03 GiB) on startup is less than desired GPU memory utilization (0.4, 8.81 GiB). Decrease GPU memory utilization or reduce GPU memory used by other processes.
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/executor/executor_base.py", line 54, in __init__[32m [repeated 3x across cluster][0m
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [rank0]:[W1019 10:59:31.086390184 ProcessGroupNCCL.cpp:1538] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m WARNING 2025-10-19 10:59:32,902 falcon3-1b-instruct_falcon3-1b-instruct-deployment v9xgbglp -- Replica health check failed.
+[36m(ServeController pid=347676)[0m ERROR 2025-10-19 10:59:32,943 controller 347676 -- Exception in Replica(id='v9xgbglp', deployment='falcon3-1b-instruct-deployment', app='falcon3-1b-instruct'), the replica will be stopped.
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/serve/_private/deployment_state.py", line 771, in check_ready
+[36m(ServeController pid=347676)[0m     ) = ray.get(self._ready_obj_ref)
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 22, in auto_init_wrapper
+[36m(ServeController pid=347676)[0m     return fn(*args, **kwargs)
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 104, in wrapper
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/_private/worker.py", line 2962, in get
+[36m(ServeController pid=347676)[0m     values, debugger_breakpoint = worker.get_objects(
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/_private/worker.py", line 1026, in get_objects
+[36m(ServeController pid=347676)[0m     raise value.as_instanceof_cause()
+[36m(ServeController pid=347676)[0m ray.exceptions.RayTaskError(RuntimeError): [36mray::ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment.initialize_and_get_metadata()[39m (pid=349620, ip=10.0.0.2, actor_id=89e3e266fe311edaa0562f7a03000000, repr=<ray.serve._private.replica.ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment object at 0x7ef899155330>)
+[36m(ServeController pid=347676)[0m   File "/usr/lib/python3.10/concurrent/futures/_base.py", line 458, in result
+[36m(ServeController pid=347676)[0m     return self.__get_result()
+[36m(ServeController pid=347676)[0m   File "/usr/lib/python3.10/concurrent/futures/_base.py", line 403, in __get_result
+[36m(ServeController pid=347676)[0m     raise self._exception
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/serve/_private/replica.py", line 1184, in initialize_and_get_metadata
+[36m(ServeController pid=347676)[0m     await self._replica_impl.initialize(deployment_config)
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/serve/_private/replica.py", line 887, in initialize
+[36m(ServeController pid=347676)[0m     raise RuntimeError(traceback.format_exc()) from None
+[36m(ServeController pid=347676)[0m RuntimeError: Traceback (most recent call last):
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/serve/_private/replica.py", line 885, in initialize
+[36m(ServeController pid=347676)[0m     await self.check_health()
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/serve/_private/replica.py", line 1021, in check_health
+[36m(ServeController pid=347676)[0m     raise e from None
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/serve/_private/replica.py", line 1016, in check_health
+[36m(ServeController pid=347676)[0m     await f
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/serve/_private/replica.py", line 1670, in _call_user_health_check
+[36m(ServeController pid=347676)[0m     await self._call_func_or_gen(self._user_health_check)
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/ray/serve/_private/replica.py", line 1549, in _call_func_or_gen
+[36m(ServeController pid=347676)[0m     result = await result
+[36m(ServeController pid=347676)[0m   File "/home/terraform/ray/./serve/deployments/multi_model_deployment.py", line 84, in check_health
+[36m(ServeController pid=347676)[0m     await self._ensure_started()
+[36m(ServeController pid=347676)[0m   File "/home/terraform/ray/./serve/deployments/multi_model_deployment.py", line 67, in _ensure_started
+[36m(ServeController pid=347676)[0m     await self._start_task
+[36m(ServeController pid=347676)[0m   File "/home/terraform/ray/serve/deployments/multi_model_server.py", line 43, in start
+[36m(ServeController pid=347676)[0m     await asyncio.gather(*tasks)
+[36m(ServeController pid=347676)[0m   File "/home/terraform/ray/serve/deployments/multi_model_server.py", line 58, in _start_model
+[36m(ServeController pid=347676)[0m     await engine.start()
+[36m(ServeController pid=347676)[0m   File "/home/terraform/ray/servers/vllm_engine.py", line 21, in start
+[36m(ServeController pid=347676)[0m     self.model = await loop.run_in_executor(None, lambda: LLM(self.model_source, **kwargs))
+[36m(ServeController pid=347676)[0m     result = self.fn(*self.args, **self.kwargs)
+[36m(ServeController pid=347676)[0m   File "/home/terraform/ray/servers/vllm_engine.py", line 21, in <lambda>
+[36m(ServeController pid=347676)[0m     self.model = await loop.run_in_executor(None, lambda: LLM(self.model_source, **kwargs))
+[36m(ServeController pid=347676)[0m     self.llm_engine = LLMEngine.from_engine_args(
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/engine/llm_engine.py", line 177, in from_engine_args
+[36m(ServeController pid=347676)[0m     return cls(vllm_config=vllm_config,
+[36m(ServeController pid=347676)[0m     self.engine_core = EngineCoreClient.make_client(
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/engine/core_client.py", line 80, in make_client
+[36m(ServeController pid=347676)[0m     return SyncMPClient(vllm_config, executor_class, log_stats)
+[36m(ServeController pid=347676)[0m     super().__init__(
+[36m(ServeController pid=347676)[0m     with launch_core_engines(vllm_config, executor_class,
+[36m(ServeController pid=347676)[0m   File "/usr/lib/python3.10/contextlib.py", line 142, in __exit__
+[36m(ServeController pid=347676)[0m     next(self.gen)
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/engine/utils.py", line 732, in launch_core_engines
+[36m(ServeController pid=347676)[0m     wait_for_engine_startup(
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/engine/utils.py", line 785, in wait_for_engine_startup
+[36m(ServeController pid=347676)[0m     raise RuntimeError("Engine core initialization failed. "
+[36m(ServeController pid=347676)[0m RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}
+[36m(ServeController pid=347676)[0m ERROR 2025-10-19 10:59:32,947 controller 347676 -- Failed to update the deployments ['falcon3-1b-instruct-deployment'].
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:59:33,588 controller 347676 -- Removing 2 replicas from Deployment(name='falcon3-1b-instruct-router', app='falcon3-1b-instruct').
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:59:35,003 controller 347676 -- Replica(id='v9xgbglp', deployment='falcon3-1b-instruct-deployment', app='falcon3-1b-instruct') is stopped.
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:59:35,003 controller 347676 -- Released rank from replica v9xgbglp in deployment Deployment(name='falcon3-1b-instruct-deployment', app='falcon3-1b-instruct')
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:59:35,654 controller 347676 -- Replica(id='u732icmw', deployment='falcon3-1b-instruct-router', app='falcon3-1b-instruct') is stopped.
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:59:35,655 controller 347676 -- Released rank from replica u732icmw in deployment Deployment(name='falcon3-1b-instruct-router', app='falcon3-1b-instruct')
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:59:35,656 controller 347676 -- Replica(id='t6vmluds', deployment='falcon3-1b-instruct-router', app='falcon3-1b-instruct') is stopped.
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:59:35,657 controller 347676 -- Released rank from replica t6vmluds in deployment Deployment(name='falcon3-1b-instruct-router', app='falcon3-1b-instruct')
+Traceback (most recent call last):
+  File "/home/terraform/.local/lib/python3.10/site-packages/ray/serve/scripts.py", line 556, in run
+    serve.run(app, blocking=should_block, name=name, route_prefix=route_prefix)
+  File "/home/terraform/.local/lib/python3.10/site-packages/ray/serve/api.py", line 723, in run
+    handle = _run(
+  File "/home/terraform/.local/lib/python3.10/site-packages/ray/serve/api.py", line 633, in _run
+    return _run_many(
+  File "/home/terraform/.local/lib/python3.10/site-packages/ray/serve/api.py", line 611, in _run_many
+    return client.deploy_applications(
+  File "/home/terraform/.local/lib/python3.10/site-packages/ray/serve/_private/client.py", line 56, in check
+    return f(self, *args, **kwargs)
+  File "/home/terraform/.local/lib/python3.10/site-packages/ray/serve/_private/client.py", line 353, in deploy_applications
+    self._wait_for_application_running(app.name)
+  File "/home/terraform/.local/lib/python3.10/site-packages/ray/serve/_private/client.py", line 263, in _wait_for_application_running
+    status_bytes = ray.get(self._controller.get_serve_status.remote(name))
+  File "/home/terraform/.local/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 22, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/home/terraform/.local/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 104, in wrapper
+    return func(*args, **kwargs)
+  File "/home/terraform/.local/lib/python3.10/site-packages/ray/_private/worker.py", line 2962, in get
+    values, debugger_breakpoint = worker.get_objects(
+  File "/home/terraform/.local/lib/python3.10/site-packages/ray/_private/worker.py", line 1028, in get_objects
+    raise value
+ray.exceptions.ActorDiedError: The actor died unexpectedly before finishing this task.
+	class_name: ServeController
+	actor_id: 37308a953ff4c43fa361d7eb03000000
+	pid: 347676
+	name: SERVE_CONTROLLER_ACTOR
+	namespace: serve
+	ip: 10.0.0.2
+The actor is dead because it was killed by `ray.kill`.
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m ERROR 10-19 10:59:31 [core.py:708] ValueError: Free memory on device (4.34/22.03 GiB) on startup is less than desired GPU memory utilization (0.4, 8.81 GiB). Decrease GPU memory utilization or reduce GPU memory used by other processes.
+2025-10-19 10:59:35,926	ERR scripts.py:599 -- [31mReceived unexpected error, see console logs for more details. Shutting down...[39m
+[36m(ServeController pid=347676)[0m Traceback (most recent call last):
+[36m(ServeController pid=347676)[0m   File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+[36m(ServeController pid=347676)[0m     return func(*args, **kwargs)
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/engine/core_client.py", line 448, in __init__[32m [repeated 4x across cluster][0m
+Deployment(name='falcon3-1b-instruct-router', app='falcon3-1b-instruct').
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:59:35,003 controller 347676 -- Replica(id='v9xgbglp', deployment='falcon3-1b-instruct-deployment', app='falcon3-1b-instruct') is stopped.
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:59:35,003 controller 347676 -- Released rank from replica v9xgbglp in deployment Deployment(name='falcon3-1b-instruct-deployment', app='falcon3-1b-instruct')
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:59:35,654 controller 347676 -- Replica(id='u732icmw', deployment='falcon3-1b-instruct-router', app='falcon3-1b-instruct') is stopped.
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:59:35,655 controller 347676 -- Released rank from replica u732icmw in deployment Deployment(name='falcon3-1b-instruct-router', app='falcon3-1b-instruct')
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:59:35,656 controller 347676 -- Replica(id='t6vmluds', deployment='falcon3-1b-instruct-router', app='falcon3-1b-instruct') is stopped.
+[36m(ServeController pid=347676)[0m INFO 2025-10-19 10:59:35,657 controller 347676 -- Released rank from replica t6vmluds in deployment Deployment(name='falcon3-1b-instruct-router', app='falcon3-1b-instruct')
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m ERROR 10-19 10:59:31 [core.py:708]     self._init_executor()
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m ERROR 10-19 10:59:31 [core.py:708]   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/executor/uniproc_executor.py", line 54, in _init_executor
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m ERROR 10-19 10:59:31 [core.py:708]     self.collective_rpc("init_device")
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m ERROR 10-19 10:59:31 [core.py:708]   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/executor/uniproc_executor.py", line 83, in collective_rpc
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m ERROR 10-19 10:59:31 [core.py:708]     return [run_method(self.driver_worker, method, args, kwargs)]
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m ERROR 10-19 10:59:31 [core.py:708]   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/utils/__init__.py", line 3122, in run_method
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m ERROR 10-19 10:59:31 [core.py:708]     return func(*args, **kwargs)
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m ERROR 10-19 10:59:31 [core.py:708]   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/worker/worker_base.py", line 259, in init_device
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m ERROR 10-19 10:59:31 [core.py:708]     self.worker.init_device()  # type: ignore
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m ERROR 10-19 10:59:31 [core.py:708]   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/worker/gpu_worker.py", line 187, in init_device
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m ERROR 10-19 10:59:31 [core.py:708]     raise ValueError(
+[36m(ServeReplica:falcon3-1b-instruct:falcon3-1b-instruct-deployment pid=349620)[0m [1;36m(EngineCore_DP0 pid=349703)[0;0m ERROR 10-19 10:59:31 [core.py:708] ValueError: Free memory on device (4.34/22.03 GiB) on startup is less than desired GPU memory utilization (0.4, 8.81 GiB). Decrease GPU memory utilization or reduce GPU memory used by other processes.
+2025-10-19 10:59:33,555	ERR scripts.py:599 -- [31mReceived unexpected error, see console logs for more details. Shutting down...[39m
+[33m(raylet)[0m Task ServeController.graceful_shutdown failed. There are infinite retries remaining, so the task will be retried. Error: The actor is dead because it was killed by `ray.kill`.
+[36m(ServeController pid=347676)[0m Traceback (most recent call last):
+[36m(ServeController pid=347676)[0m   File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+[36m(ServeController pid=347676)[0m     return func(*args, **kwargs)
+[36m(ServeController pid=347676)[0m   File "/home/terraform/.local/lib/python3.10/site-packages/vllm/v1/engine/core_client.py", line 448, in __init__[32m [repeated 4x across cluster][0m
