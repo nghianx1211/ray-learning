@@ -1,0 +1,366 @@
+# ============================================================
+# RayService Example - Using ConfigMap for Model Configs
+# Style: Load model config from separate YAML files
+# ============================================================
+apiVersion: ray.io/v1
+kind: RayService
+metadata:
+  name: falcon-ray
+  namespace: test
+  labels:
+    app: ray-vllm
+    version: v8
+spec:
+  serviceUnhealthySecondThreshold: 900
+  deploymentUnhealthySecondThreshold: 300
+
+  # ============================================================
+  # Serve Configuration V2
+  # Using file paths to load model configs from ConfigMaps
+  # ============================================================
+  serveConfigV2: |
+    applications:
+      - name: "falcon-h1-0.5b-instruct"
+        import_path: "builders.rayservice_wrapper:build_app_from_args"
+        route_prefix: "/falcon-h1-0.5b-instruct"
+        args:
+          llm_configs:
+            - /home/ray/models/h1/falcon-h1-0.5b-instruct.yaml
+
+  # ============================================================
+  # Ray Cluster Configuration
+  # ============================================================
+  rayClusterConfig:
+    rayVersion: '2.49.0'
+    enableInTreeAutoscaling: true
+
+    # Head Node
+    headGroupSpec:
+      serviceType: ClusterIP
+      rayStartParams:
+        dashboard-host: '0.0.0.0'
+        dashboard-port: '8265'
+        num-gpus: '0'
+        object-store-memory: '4294967296'  # 4GB
+      template:
+        spec:
+          containers:
+            - name: ray-head
+              image: asia-southeast1-docker.pkg.dev/kubernetes-468114/test/ray-vllm-serve:v8-latest
+              resources:
+                limits:
+                  cpu: 4
+                  memory: 24Gi
+                requests:
+                  cpu: 1
+                  memory: 16Gi
+              ports:
+                - containerPort: 6379
+                  name: gcs-server
+                - containerPort: 8265
+                  name: dashboard
+                - containerPort: 10001
+                  name: client
+                - containerPort: 8000
+                  name: serve
+              env:
+                - name: RAY_SERVE_ENABLE_EXPERIMENTAL_STREAMING
+                  value: "1"
+                - name: RAY_SERVE_REQUEST_PROCESSING_TIMEOUT_S
+                  value: "1500"
+                - name: PYTHONPATH
+                  value: "/home/ray"
+              volumeMounts:
+                - mountPath: /home/ray/models/h1
+                  name: h1-model-config
+                - mountPath: /home/ray/models/e
+                  name: e-model-config
+                - mountPath: /home/ray/models/falcon3
+                  name: falcon3-model-config
+          volumes:
+            - name: h1-model-config
+              configMap:
+                name: falcon-h1-family-config
+            - name: e-model-config
+              configMap:
+                name: falcon-e-family-config
+            - name: falcon3-model-config
+              configMap:
+                name: falcon3-family-config
+          nodeSelector:
+            cloud.google.com/gke-nodepool: app-pool
+    
+    # Worker Group for GPU
+    workerGroupSpecs:
+      - groupName: medium-model-workers
+        replicas: 1
+        minReplicas: 0
+        maxReplicas: 10
+        rayStartParams:
+          num-gpus: '1'
+          object-store-memory: '42949672960'  # 40GB
+          resources: '"{\"medium-model-workers\": 2}"'
+        template:
+          spec:
+            containers:
+              - name: ray-worker
+                image: asia-southeast1-docker.pkg.dev/kubernetes-468114/test/ray-vllm-serve:v8-latest
+                resources:
+                  limits:
+                    cpu: 10
+                    memory: "40Gi"
+                    nvidia.com/gpu: 1
+                  requests:
+                    cpu: 5
+                    memory: "30Gi"
+                    nvidia.com/gpu: 1
+                env:
+                  - name: PYTORCH_CUDA_ALLOC_CONF
+                    value: "max_split_size_mb:256"
+                  - name: TOKENIZERS_PARALLELISM
+                    value: "false"
+                  - name: CUDA_VISIBLE_DEVICES
+                    value: "0"
+                volumeMounts:
+                  - mountPath: /home/ray/models/h1
+                    name: h1-model-config
+                  - mountPath: /home/ray/models/e
+                    name: e-model-config
+                  - mountPath: /home/ray/models/falcon3
+                    name: falcon3-model-config
+            volumes:
+              - name: h1-model-config
+                configMap:
+                  name: falcon-h1-family-config
+              - name: e-model-config
+                configMap:
+                  name: falcon-e-family-config
+              - name: falcon3-model-config
+                configMap:
+                  name: falcon3-family-config
+            tolerations:
+              - key: nvidia.com/gpu
+                operator: Exists
+                effect: NoSchedule
+              - key: workload
+                operator: Equal
+                value: gpu
+                effect: NoSchedule
+            nodeSelector:
+              cloud.google.com/gke-nodepool: l4-pool
+
+---
+# ============================================================
+# ConfigMap: Falcon H1 Family Models
+# ============================================================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: falcon-h1-family-config
+  namespace: test
+data:
+  falcon-h1-0.5b-instruct.yaml: |
+    model_loading_config:
+      model_id: "falcon-h1-0.5b-instruct"
+      model_source: "tiiuae/Falcon-H1-0.5B-Instruct"
+      type: "VLLM"
+    deployment_config:
+      name: "falcon-h1-0.5b-instruct-deployment"
+      ray_actor_options:
+        num_cpus: 4
+        resources:
+          medium-model-workers: 1
+      autoscaling_config:
+        min_replicas: 1
+        max_replicas: 3
+        target_ongoing_requests: 1000
+      max_ongoing_requests: 1500
+    engine_kwargs:
+      tensor_parallel_size: 1
+      dtype: "bfloat16"
+      gpu_memory_utilization: 0.7
+      max_model_len: 16384
+      enforce_eager: false
+      max_num_seqs: 64
+      max_num_batched_tokens: 16384
+      trust_remote_code: true
+      disable_custom_all_reduce: true
+
+  falcon-h1-1.5b-instruct.yaml: |
+    model_loading_config:
+      model_id: "falcon-h1-1.5b-instruct"
+      model_source: "tiiuae/Falcon-H1-1.5B-Instruct"
+      type: "VLLM"
+    deployment_config:
+      name: "falcon-h1-1.5b-instruct-deployment"
+      ray_actor_options:
+        num_cpus: 10
+        resources:
+          medium-model-workers: 1
+      autoscaling_config:
+        min_replicas: 1
+        max_replicas: 3
+        target_ongoing_requests: 1000
+      max_ongoing_requests: 1500
+    engine_kwargs:
+      tensor_parallel_size: 1
+      dtype: "bfloat16"
+      gpu_memory_utilization: 0.9
+      max_model_len: 16384
+      enforce_eager: false
+      max_num_seqs: 48
+      max_num_batched_tokens: 16384
+      trust_remote_code: true
+      disable_custom_all_reduce: true
+
+  falcon-h1-3b-instruct.yaml: |
+    model_loading_config:
+      model_id: "falcon-h1-3b-instruct"
+      model_source: "tiiuae/Falcon-H1-3B-Instruct"
+      type: "VLLM"
+    deployment_config:
+      name: "falcon-h1-3b-instruct-deployment"
+      ray_actor_options:
+        num_cpus: 10
+        resources:
+          medium-model-workers: 1
+      autoscaling_config:
+        min_replicas: 1
+        max_replicas: 3
+        target_ongoing_requests: 1000
+      max_ongoing_requests: 1500
+    engine_kwargs:
+      tensor_parallel_size: 1
+      dtype: "bfloat16"
+      gpu_memory_utilization: 0.9
+      max_model_len: 16384
+      enforce_eager: true
+      max_num_seqs: 36
+      max_num_batched_tokens: 16384
+      trust_remote_code: true
+      disable_custom_all_reduce: true
+
+---
+# ============================================================
+# ConfigMap: Falcon E Family Models
+# ============================================================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: falcon-e-family-config
+  namespace: test
+data:
+  falcon-e-3b-base.yaml: |
+    model_loading_config:
+      model_id: "falcon-e-3b-base"
+      model_source: "tiiuae/Falcon-E-3B-Base"
+      type: "VLLM"
+    deployment_config:
+      name: "falcon-e-3b-base-deployment"
+      ray_actor_options:
+        num_cpus: 4
+        num_gpus: 0.6
+        resources:
+          medium-model-workers: 1
+      autoscaling_config:
+        min_replicas: 1
+        max_replicas: 2
+        target_ongoing_requests: 50
+      max_ongoing_requests: 256
+    engine_kwargs:
+      tensor_parallel_size: 0
+      revision: "bfloat16"
+      dtype: "bfloat16"
+      gpu_memory_utilization: 0.6
+      max_model_len: 4096
+      enforce_eager: false
+      max_num_seqs: 128
+      max_num_batched_tokens: 4096
+      trust_remote_code: true
+      disable_custom_all_reduce: true
+
+---
+# ============================================================
+# ConfigMap: Falcon3 Family Models
+# ============================================================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: falcon3-family-config
+  namespace: test
+data:
+  falcon3-1b-instruct.yaml: |
+    model_loading_config:
+      model_id: "falcon3-1b-instruct"
+      model_source: "tiiuae/Falcon3-1B-Instruct"
+      type: "VLLM"
+    deployment_config:
+      name: "falcon3-1b-instruct-deployment"
+      ray_actor_options:
+        num_cpus: 1
+        num_gpus: 0.4
+      autoscaling_config:
+        min_replicas: 1
+        max_replicas: 2
+        target_ongoing_requests: 50
+      max_ongoing_requests: 256
+    engine_kwargs:
+      tensor_parallel_size: 0
+      dtype: "bfloat16"
+      gpu_memory_utilization: 0.35
+      max_model_len: 4096
+      enforce_eager: false
+      max_num_seqs: 128
+      max_num_batched_tokens: 4096
+      trust_remote_code: true
+      disable_custom_all_reduce: true
+
+  falcon3-3b-instruct.yaml: |
+    model_loading_config:
+      model_id: "falcon3-3b-instruct"
+      model_source: "tiiuae/Falcon3-3B-Instruct"
+      type: "VLLM"
+    deployment_config:
+      name: "falcon3-3b-instruct-deployment"
+      ray_actor_options:
+        num_cpus: 1
+        num_gpus: 0.55
+      autoscaling_config:
+        min_replicas: 1
+        max_replicas: 1
+        target_ongoing_requests: 50
+      max_ongoing_requests: 256
+    engine_kwargs:
+      tensor_parallel_size: 0
+      dtype: "bfloat16"
+      gpu_memory_utilization: 0.5
+      max_model_len: 4096
+      enforce_eager: false
+      max_num_seqs: 128
+      max_num_batched_tokens: 4096
+      trust_remote_code: true
+      disable_custom_all_reduce: true
+
+---
+# ============================================================
+# Service for External Access
+# ============================================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: falcon-ray-service
+  namespace: test
+spec:
+  type: LoadBalancer
+  selector:
+    ray.io/cluster: falcon-ray
+    ray.io/node-type: head
+  ports:
+    - name: serve
+      port: 8000
+      targetPort: 8000
+      protocol: TCP
+    - name: dashboard
+      port: 8265
+      targetPort: 8265
+      protocol: TCP

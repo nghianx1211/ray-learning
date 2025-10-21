@@ -1,26 +1,4 @@
 #!/usr/bin/env python3
-"""
-RayService wrapper for builders.app_builder.
-This makes build_app() compatible with RayService's import_path requirement.
-
-RayService expects a module-level variable that is a Serve application.
-This wrapper creates that variable by calling build_app().
-
-Usage in RayService serveConfigV2:
-    # Method 2: Inline config (like Ray official!)
-    applications:
-      - name: "my-model"
-        import_path: builders.rayservice_wrapper:build_app_from_args
-        args:
-          config_path: "/config/model_config.yaml"
-          # Or inline config like Ray official:
-          # llm_configs:
-          #   - model_loading_config: {...}
-
-Note: This wrapper handles both single and multiple model configs:
-- Single model: Returns the router directly
-- Multiple models: Returns first model (or specify MODEL_ID env var)
-"""
 from builders.app_builder import build_app
 import os
 
@@ -71,15 +49,19 @@ def build_app_from_args(args: dict):
     """
     Build app from serveConfigV2 args - exactly like Ray official build_openai_app()!
     
-    This enables inline config in serveConfigV2:
+    This enables multiple config methods in serveConfigV2:
         applications:
           - name: "my-model"
             import_path: builders.rayservice_wrapper:build_app_from_args
             args:
-              # Method 1: File path
-              config_path: "/config/model.yaml"
+              # Method 1: Full config file path
+              config_path: "/config/model_config.yaml"
               
-              # Method 2: Inline config (like Ray official!)
+              # Method 2: Single model config file path (NEW!)
+              llm_configs:
+                - models/h1/falcon-h1-0.5b-instruct.yaml
+              
+              # Method 3: Inline dict config (like Ray official!)
               llm_configs:
                 - model_loading_config:
                     model_id: "falcone-3b-instruct"
@@ -88,60 +70,112 @@ def build_app_from_args(args: dict):
                   engine_kwargs: {...}
     
     Supports:
-    1. File path: args = {"config_path": "/path/to/config.yaml"}
-    2. Inline dict: args = {"llm_configs": [{...}]}  ← Like Ray official!
+    1. Full config path: args = {"config_path": "/path/to/config.yaml"}
+    2. Model file paths: args = {"llm_configs": ["models/h1/model1.yaml", "models/e/model2.yaml"]}
+    3. Inline dict: args = {"llm_configs": [{...}]}  ← Like Ray official!
     """
     print(f"🚀 Building app from args: {list(args.keys())}")
+    import yaml
+    import tempfile
     
-    # Check if inline config provided (like Ray official)
+    # Check if llm_configs is provided
     if "llm_configs" in args:
-        print("   Using inline llm_configs")
+        llm_configs_arg = args["llm_configs"]
         
-        # Create temporary YAML structure matching your model_config.yaml format
-        import tempfile
-        import yaml
-        
-        llm_configs = args["llm_configs"]
-        
-        # Wrap in applications structure (your format)
-        temp_config = {
-            "applications": [{
-                "name": "inline-app",
-                "route_prefix": "/inline",
-                "args": {
-                    "llm_configs": llm_configs
+        # Check if it's a list of file paths (strings) or inline dicts
+        if isinstance(llm_configs_arg, list) and len(llm_configs_arg) > 0:
+            first_item = llm_configs_arg[0]
+            
+            # Case 1: List of YAML file paths
+            if isinstance(first_item, str):
+                print(f"   Loading {len(llm_configs_arg)} model config file(s)")
+                
+                loaded_configs = []
+                for config_file in llm_configs_arg:
+                    print(f"   - Loading: {config_file}")
+                    with open(config_file, 'r') as f:
+                        model_cfg = yaml.safe_load(f)
+                        loaded_configs.append(model_cfg)
+                
+                # Wrap in applications structure
+                temp_config = {
+                    "applications": [{
+                        "name": "multi-model-app",
+                        "route_prefix": "/",
+                        "args": {
+                            "llm_configs": loaded_configs
+                        }
+                    }]
                 }
-            }]
-        }
-        
-        # Write to temp file
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
-            yaml.dump(temp_config, f)
-            temp_path = f.name
-        
-        print(f"   Created temp config: {temp_path}")
-        
-        try:
-            # Build using existing builder
-            built_app = build_app({"config_path": temp_path})
+                
+                # Write to temp file
+                with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
+                    yaml.dump(temp_config, f)
+                    temp_path = f.name
+                
+                print(f"   Created temp config: {temp_path}")
+                
+                try:
+                    # Build using existing builder
+                    built_app = build_app({"config_path": temp_path})
+                    
+                    # Cleanup
+                    os.unlink(temp_path)
+                    
+                    # Handle dict vs single app
+                    if isinstance(built_app, dict):
+                        first = list(built_app.values())[0]
+                        print(f"✓ Built from {len(llm_configs_arg)} model file(s)")
+                        return first
+                    return built_app
+                    
+                except Exception as e:
+                    # Cleanup on error
+                    if os.path.exists(temp_path):
+                        os.unlink(temp_path)
+                    raise e
             
-            # Cleanup
-            import os as os_module
-            os_module.unlink(temp_path)
-            
-            # Handle dict vs single app
-            if isinstance(built_app, dict):
-                first = list(built_app.values())[0]
-                print(f"✓ Built from inline config")
-                return first
-            return built_app
-            
-        except Exception as e:
-            # Cleanup on error
-            import os as os_module
-            if os_module.path.exists(temp_path):
-                os_module.unlink(temp_path)
-            raise e
+            # Case 2: Inline dict configs
+            elif isinstance(first_item, dict):
+                print(f"   Using inline llm_configs (dict format)")
+                
+                # Wrap in applications structure
+                temp_config = {
+                    "applications": [{
+                        "name": "inline-app",
+                        "route_prefix": "/inline",
+                        "args": {
+                            "llm_configs": llm_configs_arg
+                        }
+                    }]
+                }
+                
+                # Write to temp file
+                with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
+                    yaml.dump(temp_config, f)
+                    temp_path = f.name
+                
+                print(f"   Created temp config: {temp_path}")
+                
+                try:
+                    # Build using existing builder
+                    built_app = build_app({"config_path": temp_path})
+                    
+                    # Cleanup
+                    os.unlink(temp_path)
+                    
+                    # Handle dict vs single app
+                    if isinstance(built_app, dict):
+                        first = list(built_app.values())[0]
+                        print(f"✓ Built from inline config")
+                        return first
+                    return built_app
+                    
+                except Exception as e:
+                    # Cleanup on error
+                    if os.path.exists(temp_path):
+                        os.unlink(temp_path)
+                    raise e
     
     # File path mode
     elif "config_path" in args:

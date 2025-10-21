@@ -109,6 +109,8 @@ ENV DEBIAN_FRONTEND=noninteractive \
     HF_HOME=/app/cache \
     # Python path - set explicitly
     PYTHONPATH=/app \
+    # Add /usr/local/bin to PATH for ray command
+    PATH=/usr/local/bin:$PATH \
     # Locale
     LANG=C.UTF-8 \
     LC_ALL=C.UTF-8
