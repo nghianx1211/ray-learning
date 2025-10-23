@@ -3,6 +3,7 @@ from servers.base_engine import BaseEngine
 import torch
 import whisper
 
+
 @register_engine("AUDIO")
 class AudioEngine(BaseEngine):
     async def start(self):

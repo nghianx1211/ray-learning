@@ -25,22 +25,22 @@ logger = get_logger(__name__)
 )
 class MultiModelDeployment:
     """
-    Deployment host nhiều loại model (VLLM, AUDIO, VISION, VIDEO) trong cùng server.
-    Mỗi model sẽ có metadata riêng, router sẽ dùng get_config() để đăng ký model.
+    Deployment hosts multiple types of models (VLLM, AUDIO, VISION, VIDEO) within the same server.
+    Each model will have its own metadata, and the router will use get_config() to register the model.
     """
 
     def __init__(self, llm_configs: List[MultiModelConfig]):
-        # CRITICAL: Ensure CUDA_VISIBLE_DEVICES is set in actual OS environment
+        # CRITICAL: Ensure CUDA_VISIBLE_DEVICES is set in the actual OS environment
         # This is required for VLLM multiprocessing.spawn to work properly
-        cuda_devices = os.environ.get('CUDA_VISIBLE_DEVICES', '')
+        cuda_devices = os.environ.get("CUDA_VISIBLE_DEVICES", "")
         if not cuda_devices:
             # If not set, default to GPU 0
-            cuda_devices = '0'
-            os.environ['CUDA_VISIBLE_DEVICES'] = cuda_devices
-        
+            cuda_devices = "0"
+            os.environ["CUDA_VISIBLE_DEVICES"] = cuda_devices
+
         logger.info(f"⚙️ CUDA_VISIBLE_DEVICES={cuda_devices}")
-        
-        # Server quản lý nhiều model khác nhau
+
+        # The server manages multiple different models
         self.server = MultiModelServer(llm_configs)
         self.models: Dict[str, Dict[str, Any]] = {}
 
@@ -54,26 +54,24 @@ class MultiModelDeployment:
                 "deployment_config": cfg.deployment_config,
             }
 
-            logger.info(
-                f"Registered model in deployment: {model_id} ({model_type})"
-            )
+            logger.info(f"Registered model in deployment: {model_id} ({model_type})")
 
-        # Khởi động async server - đợi cho đến khi hoàn tất
+        # Start the async server - wait until it is fully initialized
         self._start_task = None
 
     async def _ensure_started(self):
-        """Ensure server is started before processing requests."""
+        """Ensure the server is started before processing requests."""
         if self._start_task is None:
             self._start_task = asyncio.create_task(self.server.start())
         await self._start_task
 
     # ------------------------------------------------------------------
-    # Public API (Router sẽ gọi qua DeploymentHandle)
+    # Public API (Router will call via DeploymentHandle)
     # ------------------------------------------------------------------
     async def get_config(self) -> Dict[str, Any]:
         """
-        Return metadata cho router biết model_id và type.
-        Router sẽ tự động gọi hàm này khi đăng ký model.
+        Return metadata for the router to know model_id and type.
+        The router will automatically call this function when registering a model.
         """
         return {
             "models": list(self.models.values()),
@@ -81,14 +79,14 @@ class MultiModelDeployment:
         }
 
     async def check_health(self) -> Dict[str, Any]:
-        """Kiểm tra health của tất cả model."""
+        """Check the health of all models."""
         await self._ensure_started()
-        status = await self.server.check_health()
+        await self.server.check_health()
         return {"status": "healthy", "models": list(self.models.keys())}
 
     async def infer(self, request: Dict[str, Any]) -> AsyncGenerator[Any, None]:
         """
-        Unified inference entrypoint — dùng cho mọi loại model.
+        Unified inference entrypoint — used for all types of models.
         Expect body: {"model_id": "...", "input": "...", "params": {...}}
         """
         logger.info(f"Received inference request: {request}")
@@ -105,7 +103,7 @@ class MultiModelDeployment:
             return
 
         logger.info(f"Running inference for model {model_id}")
-        
+
         # Ensure server is started
         await self._ensure_started()
         logger.info(f"Server is ready, dispatching inference...")
@@ -119,7 +117,9 @@ class MultiModelDeployment:
             logger.error(f"Inference failed for {model_id}: {e}")
             yield {"error": str(e)}
 
-    async def chat_completions(self, request: Dict[str, Any]) -> AsyncGenerator[Any, None]:
+    async def chat_completions(
+        self, request: Dict[str, Any]
+    ) -> AsyncGenerator[Any, None]:
         """
         OpenAI-compatible chat completions endpoint.
         Expect body following ChatCompletionRequest format.
@@ -146,7 +146,7 @@ class MultiModelDeployment:
             return
 
         logger.info(f"Running chat completions for model {model_id}")
-        
+
         # Ensure server is started
         await self._ensure_started()
         logger.info(f"Server is ready, dispatching chat completions...")
@@ -187,7 +187,7 @@ class MultiModelDeployment:
             return
 
         logger.info(f"Running completions for model {model_id}")
-        
+
         # Ensure server is started
         await self._ensure_started()
         logger.info(f"Server is ready, dispatching completions...")

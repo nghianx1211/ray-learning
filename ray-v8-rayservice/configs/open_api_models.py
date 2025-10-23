@@ -4,10 +4,9 @@ If there are any major differences in the interface, the expectation is that
 they will be upstreamed to vLLM.
 """
 
-from typing import TYPE_CHECKING, Any, AsyncGenerator, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, AsyncGenerator, Union
 
 from pydantic import (
-    BaseModel,
     ConfigDict,
     Field,
 )
@@ -26,7 +25,6 @@ from vllm.entrypoints.openai.protocol import (
 from vllm.utils import random_uuid
 
 
-
 class ChatCompletionRequest(vLLMChatCompletionRequest):
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -43,7 +41,7 @@ class ErrorResponse(vLLMErrorResponse):
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
 
-# TODO (Kourosh): Upstream
+# TODO: Upstream
 class CompletionRequest(vLLMCompletionRequest):
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -65,7 +63,7 @@ class CompletionStreamResponse(vLLMCompletionStreamResponse):
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
 
-# TODO (Kourosh): Upstream
+# TODO: Upstream
 class EmbeddingCompletionRequest(vLLMEmbeddingCompletionRequest):
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -102,41 +100,3 @@ LLMCompletionsResponse = Union[
         Union[CompletionStreamResponse, CompletionResponse, ErrorResponse], None
     ],
 ]
-
-# TODO: remove this class
-class OpenAIHTTPException(Exception):
-    def __init__(
-        self,
-        status_code: int,
-        message: str,
-        type: str = "Unknown",
-        internal_message: Optional[str] = None,
-    ) -> None:
-        self.status_code = status_code
-        self.message = message
-        self.type = type
-        self.internal_message = internal_message
-
-
-# TODO: upstream metadata for ModelData
-# Compared to vLLM this has a metadata field.
-class ModelCard(BaseModel):
-    model_config = ConfigDict(
-        protected_namespaces=tuple(), arbitrary_types_allowed=True
-    )
-
-    id: str
-    object: str
-    owned_by: str
-    permission: List[str]
-    metadata: Dict[str, Any]
-
-    @property
-    def model_type(self) -> str:
-        return self.metadata["engine_config"]["model_type"]
-
-
-class ModelList(BaseModel):
-    model_config = ConfigDict(arbitrary_types_allowed=True)
-    data: List[ModelCard]
-    object: str = "list"

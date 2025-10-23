@@ -1,4 +1,3 @@
-import ray
 from common.base_pydantic import BaseModelExtended
 from cloud.cloud_utils import CloudMirrorConfig
 from pydantic import Field
@@ -9,11 +8,12 @@ from typing import (
     Union,
 )
 
+
 class ModelLoadingConfig(BaseModelExtended):
     model_id: str = Field(
         description="The ID that should be used by end users to access this model.",
     )
-    
+
     model_source: Optional[Union[str, CloudMirrorConfig]] = Field(
         default=None,
         description=(
